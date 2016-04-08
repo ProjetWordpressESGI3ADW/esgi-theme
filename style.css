@@ -1,13 +1,17 @@
 /*
- Theme Name:   esgi-theme
- Theme URI:    http://example.com/esgi/
- Description:  ESGI Theme
- Author:       Roland Kullet
- Author URI:   http://example.com
- Template:     esgi-theme
- Version:      0
- License:      GNU General Public License v2 or later
- License URI:  http://www.gnu.org/licenses/gpl-2.0.html
- Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
- Text Domain:  esgi-theme
+Theme Name:   ESGI
+Theme URI:    http://example.com/esgi/
+Description:  ESGI Theme
+Author:       Kintoki
+Author URI:   http://example.com
+Template:     esgi
+Version:      0.1
+License:      GNU General Public License v2 or later
+License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready 
+Text Domain:  esgi
 */
+
+body{
+
+}
