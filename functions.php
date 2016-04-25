@@ -138,3 +138,67 @@ function head_style(){
 }
 add_action('wp_head', 'head_style');
 
+
+
+/*Création de mon propre type */
+add_action( 'init', 'create_post_type' );
+function create_post_type() {
+	register_post_type( 'acme_product',
+		array(
+			'labels' => array(
+			'name' => __( 'Products' ),
+			'singular_name' => __( 'Product' )
+		),
+		'public' => true,
+		'has_archive' => true,
+		)
+	);
+}
+
+// Add post thumbnails
+function custom_theme_setup(){
+	add_theme_support('post-thumbnails');
+}
+add_action('after_setup_theme', 'custom_theme_setup');
+
+
+/* Creation d'un nouveau type de contenu (custom post-type) */
+function newCustomPostType(){
+	register_post_type('team', array(
+			'labels' => array(
+					'name' => __('Equipe'),
+					'singular_label' => __('Membre')),
+					'public' => true,
+					'has_archive' => true,
+					'menu_position' => 4,
+					'supports' => array(
+						'title',
+						'thumbnail',
+						'revisions',
+				)
+			));
+}
+
+add_action('init', 'newCustomPostType');
+
+function init_fields(){
+	add_meta_box('id_poste', 'Poste au sein de l\'entreprise', 'id_poste', 'team');
+}
+
+function id_poste(){
+	global $post;
+	$custom = get_post_custom($post->ID);
+	$id_poste = $custom["id_poste"][0];
+	echo '<input size="70" type="text" value="'.$id_poste.'" name="id_poste"/>';
+}
+
+function save_custom(){
+	global $post;
+	// fonction pour eviter le vidage des champs personalisés lors de la 
+	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+		return $postID;
+	update_post_meta($post->ID, "id_poste", $_POST["id_poste"]);
+}
+// function pr ajouter des chps personnalisés 
+add_action("admin_init", "init_fields");
+add_action("save_post", "save_custom");
