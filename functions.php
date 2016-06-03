@@ -188,14 +188,17 @@ function newCustomPostType(){
 					'menu_position' => 4,
 					'menu_icon' => get_bloginfo('template_directory') . '/images/calend.png',
 					'supports' => array(
-						'title',
 						'thumbnail',
-						'revisions',
+						'revisions'
 				)
 			));
 }
 
 add_action('init', 'newCustomPostType');
+add_post_type_support('event','title');
+add_post_type_support('event', 'author');
+add_post_type_support('event', 'comments');
+add_post_type_support('event', 'post-formats');
 
 // Add post thumbnails
 /*function custom_theme_setup(){
@@ -208,7 +211,7 @@ add_action('after_setup_theme', 'custom_theme_setup');
  * Register meta box(es).
  */
 function wpdocs_register_meta_boxes() {
-    add_meta_box ( 'id_event_titre', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
+    // add_meta_box ( 'id_event_titre', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
 }
@@ -237,7 +240,7 @@ add_action( 'save_post', 'wpdocs_save_meta_box' );
 /*add_meta_box ( 'id_poste', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
 add_action( 'add_meta_boxes', 'Titre' );*/
 function event_titre_callback(){
-	echo '<input type="text" minlenght="5" maxlenght="50" required placeholder="Saisissez le titre de votre event" name="event_titre">';
+	// echo '<input type="text" minlenght="5" maxlenght="50" required placeholder="Saisissez le titre de votre event" name="event_titre">';
 }
 function event_description_callback(){
 	echo '<textarea minlenght="15" maxlenght="150" required name="event_description" placeholder="Saisissez votre description"></textarea>';
@@ -272,3 +275,27 @@ function save_custom(){
 // function pr ajouter des chps personnalisés 
 add_action("admin_init", "init_fields");
 add_action("save_post", "save_custom");
+
+
+
+
+
+
+
+/* ############  IMPORT DU CSS BACK-ADMIN  ############# */
+function admin_css() {
+	$admin_handle = 'admin_css';
+	$admin_stylesheet = get_template_directory_uri() . '/css/admin.css';
+
+	wp_enqueue_style( $admin_handle, $admin_stylesheet );
+}
+add_action('admin_print_styles', 'admin_css', 11 );
+
+/* ############  IMPORT DU JS BACK-ADMIN  ############# */
+function admin_js() {
+	$admin_handle = 'admin_js';
+	$admin_js = get_template_directory_uri() . '/js/admin.js';
+
+	wp_enqueue_script( $admin_handle, $admin_js );
+}
+add_action('admin_print_scripts', 'admin_js', 11 );
