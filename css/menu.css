@@ -1,0 +1,61 @@
+/*
+	MENU VERTICAL
+*/
+
+.navbar-side-menu{ 
+  width: 20%; 
+  background:#000;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  max-width:400px;
+  margin:0;
+  padding:95px 0 30px;
+  overflow-y:auto;
+  max-height:100%;
+  border:none;
+  transition:.3s padding-top ease,.5s transform ease;
+  z-index:-1;
+  color:#ffffff;
+}
+
+.navbar-side-menu-collapse{
+  display:block;
+  transform:translateX(-100%);
+}
+
+.navbar-side-menu a {
+  text-decoration: none;
+  font-size: 17px;
+  color:#fff;
+  padding: 0 35px;
+  text-transform:uppercase;
+  position:relative;
+}
+
+.navbar-side-menu .navbar-menu-li{
+  line-height:70px;
+}
+
+.navbar-side-menu span{
+  text-transform:lowercase;
+  position:absolute;
+  bottom:-41px;
+  left:15px;
+  opacity:0.4;
+}
+
+.navbar-side-menu .navbar-menu-ul{
+  margin:0;
+  padding:0;
+  list-style: none;
+}
+
+.navbar-side-menu img{
+  vertical-align: middle;
+}
+
+
+
+
