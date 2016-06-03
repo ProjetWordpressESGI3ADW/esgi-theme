@@ -2,7 +2,7 @@
 /**
  * Proper way to enqueue scripts and styles
  */
-// Fonction pour éviter les conflits entre js et css et les inclures
+// Fonction pour éviter les conflits entre js et css et les inclure
 function wpdocs_theme_name_scripts() {
     wp_enqueue_style( 'style-name', get_stylesheet_uri() );
     wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
@@ -164,10 +164,10 @@ add_action('after_setup_theme', 'custom_theme_setup');
 
 /* Creation d'un nouveau type de contenu (custom post-type) */
 function newCustomPostType(){
-	register_post_type('team', array(
+	register_post_type('event', array(
 			'labels' => array(
-					'name' => __('Equipe'),
-					'singular_label' => __('Membre')),
+					'name' => __('Evenements'),
+					'singular_label' => __('Evenement')),
 					'public' => true,
 					'has_archive' => true,
 					'menu_position' => 4,
