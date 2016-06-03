@@ -198,8 +198,8 @@ function newCustomPostType(){
 						'revisions',
 				)
 			));
+	register_taxonomy( 'Ajouter Categorie', 'event', array( 'hierarchical' => true, 'label' => 'Ajouter Categorie', 'query_var' => true, 'rewrite' => true ));
 }
-
 add_action('init', 'newCustomPostType');
 
 function init_fields(){
