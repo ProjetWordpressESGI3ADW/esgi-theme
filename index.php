@@ -1,7 +1,7 @@
 <?php
 	get_header();
 
-	if(is_home()){
+	/*if(is_home()){
 		if(have_posts()){
 			while(have_posts()):
 				the_post();
@@ -34,4 +34,4 @@
 		dynamic_sidebar('sidebar-1');
 	}
 
-	get_footer();
+	get_footer();*/

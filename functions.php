@@ -3,16 +3,34 @@
  * Proper way to enqueue scripts and styles
  */
 // Fonction pour éviter les conflits entre js et css et les inclures
-function wpdocs_theme_name_scripts() {
+function wpdocs_theme_name_scripts() {    	
+	/**
+	*	Module
+	*/
+	wp_enqueue_style('style-menu', get_stylesheet_directory_uri() . '/css/menu.css' );
+	wp_enqueue_style('style-font', get_stylesheet_directory_uri() . '/css/font.css' );
+	/**
+	*	Général
+	*/
     wp_enqueue_style( 'style-name', get_stylesheet_uri() );
-    wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
+    /**
+    *	Javascript
+    */    
+    wp_enqueue_script('jquery');
+    wp_enqueue_script( 'script-menu', get_template_directory_uri() . '/js/menu.js');
+    wp_enqueue_script( 'script-example', get_template_directory_uri() . '/js/example.js');
+    /**
+	*	Bootstrap
+	*/
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );		
+    wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
 }
 add_action( 'wp_enqueue_scripts', 'wpdocs_theme_name_scripts' );
 
 //Fonction pour ajouter des menus
 function menus(){
-	register_nav_menu('main_menu','Menu_principal');
-	register_nav_menu('secondary_menu','Menu_secondaire');
+	register_nav_menu('x_menu','Menu horizontal');
+	register_nav_menu('y_menu','Menu vertical');
 }
 add_action('init', 'menus');
 
