@@ -9,6 +9,7 @@ function wpdocs_theme_name_scripts() {
 	*/
 	wp_enqueue_style('style-menu', get_stylesheet_directory_uri() . '/css/menu.css' );
 	wp_enqueue_style('style-font', get_stylesheet_directory_uri() . '/css/font.css' );
+	wp_enqueue_style('style-icon', get_stylesheet_directory_uri() . '/css/icon.css' );
 	/**
 	*	Général
 	*/
