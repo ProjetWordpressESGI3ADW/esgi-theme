@@ -208,7 +208,6 @@ add_action('after_setup_theme', 'custom_theme_setup');
  * Register meta box(es).
  */
 function wpdocs_register_meta_boxes() {
-    add_meta_box ( 'id_event_titre', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
 }
@@ -236,20 +235,25 @@ add_action( 'save_post', 'wpdocs_save_meta_box' );
 */
 /*add_meta_box ( 'id_poste', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
 add_action( 'add_meta_boxes', 'Titre' );*/
-function event_titre_callback(){
-	echo '<input type="text" minlenght="5" maxlenght="50" required placeholder="Saisissez le titre de votre event" name="event_titre">';
-}
-function event_description_callback(){
-	echo '<textarea minlenght="15" maxlenght="150" required name="event_description" placeholder="Saisissez votre description"></textarea>';
 
+function event_description_callback(){
+	echo '<div id="descriptiondiv">
+			<div id="description-wrap">
+				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
+				<input type="text" name="post_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
+			<div class="inside">
+				<div id="edit-slug-box" class="hide-if-no-js">
+				</div>
+				<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="1d10d5b717">
+		  	</div>
+		  </div>';
 }
+
 function event_datefin_callback(){
 	$dateMinimum = time() + (3600*24);
 	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
 	echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
 }
-
-
 
 function init_fields(){
 	add_meta_box('id_poste', 'Poste au sein de l\'entreprise', 'id_poste', 'team');
