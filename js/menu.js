@@ -64,10 +64,10 @@ var menu = {
 		menu.getOpenNavbarSide().on('click', function(){			
             if(menu.getNavbarSide().hasClass('navbar-side-menu-collapse')){            							            	
                 menu.getNavbarSide().removeClass('navbar-side-menu-collapse');                
-                menu.getIndexContent().css('margin', '0 0 0 20vw');
+                menu.getIndexContent().css('margin', '0 0 0 300px');
             }else{
                 menu.getNavbarSide().addClass('navbar-side-menu-collapse');
-                menu.getIndexContent().css('margin', '0 0 0 5vw');                                
+                menu.getIndexContent().css('margin', '0 0 0 80px');                                
             }
 		});
 	}
