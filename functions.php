@@ -173,14 +173,9 @@ function create_post_type() {
 	);
 }
 
-// Add post thumbnails
-function custom_theme_setup(){
-	add_theme_support('post-thumbnails');
-}
-add_action('after_setup_theme', 'custom_theme_setup');
 
 
-/* Creation d'un nouveau type de contenu (custom post-type) */
+/* Creation du nouveau type de contenu 'event' affiché as "Evenement" */
 function newCustomPostType(){
 	register_post_type('event', array(
 			'labels' => array(
@@ -201,6 +196,60 @@ function newCustomPostType(){
 	register_taxonomy( 'Ajouter Categorie', 'event', array( 'hierarchical' => true, 'label' => 'Ajouter Categorie', 'query_var' => true, 'rewrite' => true ));
 }
 add_action('init', 'newCustomPostType');
+
+// Add post thumbnails
+/*function custom_theme_setup(){
+	add_theme_support('post-thumbnails');
+}
+add_action('after_setup_theme', 'custom_theme_setup');
+*/
+
+/**
+ * Register meta box(es).
+ */
+function wpdocs_register_meta_boxes() {
+    add_meta_box ( 'id_event_titre', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
+    add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
+    add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
+}
+add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+ 
+/**
+ * Meta box display callback.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function wpdocs_my_display_callback( $post ) {
+    echo '<script>alert('.$post.')</script>';
+}
+ 
+/**
+ * Save meta box content.
+ *
+ * @param int $post_id Post ID
+ */
+/*function wpdocs_save_meta_box( $post_id ) {
+	echo '<input type="text" name="event_titre" placeholder="Votre titre">';
+    // Save logic goes here. Don't forget to include nonce checks!
+}
+add_action( 'save_post', 'wpdocs_save_meta_box' );
+*/
+/*add_meta_box ( 'id_poste', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
+add_action( 'add_meta_boxes', 'Titre' );*/
+function event_titre_callback(){
+	echo '<input type="text" minlenght="5" maxlenght="50" required placeholder="Saisissez le titre de votre event" name="event_titre">';
+}
+function event_description_callback(){
+	echo '<textarea minlenght="15" maxlenght="150" required name="event_description" placeholder="Saisissez votre description"></textarea>';
+
+}
+function event_datefin_callback(){
+	$dateMinimum = time() + (3600*24);
+	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
+	echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
+}
+
+
 
 function init_fields(){
 	add_meta_box('id_poste', 'Poste au sein de l\'entreprise', 'id_poste', 'team');
