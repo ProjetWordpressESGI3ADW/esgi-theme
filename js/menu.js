@@ -11,6 +11,7 @@ var menu = {
 		*/
 		menu.setOpenNavbarSide();
 		menu.setNavbarSide();
+		menu.setIndexContent();
 		menu.setNavbarSideCollapse();
 
 		/**
@@ -33,12 +34,19 @@ var menu = {
 	setNavbarSideCollapse : function(){
 		this._navbarSideCollapse = jQuery('.navbar-side-menu.navbar-side-menu-collapse');
 	},
+	setIndexContent : function(){
+		this._indexContent = jQuery('.index-content');
+	},
 
 	/**
 	*	Getter
 	*/	
 	getOpenNavbarSide : function(){
 		return this._openNavbarSide;
+	},
+
+	getIndexContent : function(){
+		return this._indexContent;
 	},
 
 	getNavbarSide : function(){
@@ -53,11 +61,12 @@ var menu = {
 	*	Functions
 	*/
 	toggle : function(){	
-		menu.getOpenNavbarSide().on('click', function(){									
-            if(menu.getNavbarSide().hasClass('navbar-side-menu-collapse'))
-                menu.getNavbarSide().removeClass('navbar-side-menu-collapse');
-            else
-                menu.getNavbarSide().addClass('navbar-side-menu-collapse');                
+		menu.getOpenNavbarSide().on('click', function(){			
+            if(menu.getNavbarSide().hasClass('navbar-side-menu-collapse')){            							            	
+                menu.getNavbarSide().removeClass('navbar-side-menu-collapse');                                
+            }else{
+                menu.getNavbarSide().addClass('navbar-side-menu-collapse');                                               
+            }
 		});
 	}
 };

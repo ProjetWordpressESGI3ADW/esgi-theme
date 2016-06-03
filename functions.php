@@ -9,6 +9,7 @@ function wpdocs_theme_name_scripts() {
 	*/
 	wp_enqueue_style('style-menu', get_stylesheet_directory_uri() . '/css/menu.css' );
 	wp_enqueue_style('style-font', get_stylesheet_directory_uri() . '/css/font.css' );
+	wp_enqueue_style('style-icon', get_stylesheet_directory_uri() . '/css/icon.css' );
 	/**
 	*	Général
 	*/
@@ -188,17 +189,14 @@ function newCustomPostType(){
 					'menu_position' => 4,
 					'menu_icon' => get_bloginfo('template_directory') . '/images/calend.png',
 					'supports' => array(
+						'title',
 						'thumbnail',
-						'revisions'
+						'revisions',
 				)
 			));
+	register_taxonomy( 'Ajouter Categorie', 'event', array( 'hierarchical' => true, 'label' => 'Ajouter Categorie', 'query_var' => true, 'rewrite' => true ));
 }
-
 add_action('init', 'newCustomPostType');
-add_post_type_support('event','title');
-add_post_type_support('event', 'author');
-add_post_type_support('event', 'comments');
-add_post_type_support('event', 'post-formats');
 
 // Add post thumbnails
 /*function custom_theme_setup(){
@@ -211,7 +209,6 @@ add_action('after_setup_theme', 'custom_theme_setup');
  * Register meta box(es).
  */
 function wpdocs_register_meta_boxes() {
-    // add_meta_box ( 'id_event_titre', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
 }
@@ -239,20 +236,25 @@ add_action( 'save_post', 'wpdocs_save_meta_box' );
 */
 /*add_meta_box ( 'id_poste', 'Titre', 'event_titre_callback', ['event'], 'normal', 'high');
 add_action( 'add_meta_boxes', 'Titre' );*/
-function event_titre_callback(){
-	// echo '<input type="text" minlenght="5" maxlenght="50" required placeholder="Saisissez le titre de votre event" name="event_titre">';
-}
-function event_description_callback(){
-	echo '<textarea minlenght="15" maxlenght="150" required name="event_description" placeholder="Saisissez votre description"></textarea>';
 
+function event_description_callback(){
+	echo '<div id="descriptiondiv">
+			<div id="description-wrap">
+				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
+				<input type="text" name="post_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
+			<div class="inside">
+				<div id="edit-slug-box" class="hide-if-no-js">
+				</div>
+				<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="1d10d5b717">
+		  	</div>
+		  </div>';
 }
+
 function event_datefin_callback(){
 	$dateMinimum = time() + (3600*24);
 	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
 	echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
 }
-
-
 
 function init_fields(){
 	add_meta_box('id_poste', 'Poste au sein de l\'entreprise', 'id_poste', 'team');
@@ -275,27 +277,3 @@ function save_custom(){
 // function pr ajouter des chps personnalisés 
 add_action("admin_init", "init_fields");
 add_action("save_post", "save_custom");
-
-
-
-
-
-
-
-/* ############  IMPORT DU CSS BACK-ADMIN  ############# */
-function admin_css() {
-	$admin_handle = 'admin_css';
-	$admin_stylesheet = get_template_directory_uri() . '/css/admin.css';
-
-	wp_enqueue_style( $admin_handle, $admin_stylesheet );
-}
-add_action('admin_print_styles', 'admin_css', 11 );
-
-/* ############  IMPORT DU JS BACK-ADMIN  ############# */
-function admin_js() {
-	$admin_handle = 'admin_js';
-	$admin_js = get_template_directory_uri() . '/js/admin.js';
-
-	wp_enqueue_script( $admin_handle, $admin_js );
-}
-add_action('admin_print_scripts', 'admin_js', 11 );

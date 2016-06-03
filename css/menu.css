@@ -2,8 +2,12 @@
 	MENU VERTICAL
 */
 
+.index-content{
+  padding:15px;  
+}
+
 .navbar-side-menu{ 
-  width: 20%; 
+  width:300px;
   background:#000;
   position:fixed;
   top:0;
@@ -17,12 +21,13 @@
   border:none;
   transition:.3s padding-top ease,.5s transform ease;
   z-index:-1;
-  color:#ffffff;
+  color:#ffffff;      
 }
 
 .navbar-side-menu-collapse{
+  width:300px;
   display:block;
-  transform:translateX(-100%);
+  transform:translateX(-100%);  
 }
 
 .navbar-side-menu a {
