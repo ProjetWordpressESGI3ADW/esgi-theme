@@ -3,9 +3,7 @@
 */
 
 .index-content{
-  padding:15px;
-  transition: margin .5s; 
-  margin: 0 0 0 80px;
+  padding:15px;  
 }
 
 .navbar-side-menu{ 
@@ -23,14 +21,13 @@
   border:none;
   transition:.3s padding-top ease,.5s transform ease;
   z-index:-1;
-  color:#ffffff;    
-  transition: width .5s;
+  color:#ffffff;      
 }
 
 .navbar-side-menu-collapse{
+  width:300px;
   display:block;
-  width:80px;
-  transition: width .5s;
+  transform:translateX(-100%);  
 }
 
 .navbar-side-menu a {

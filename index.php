@@ -18,7 +18,7 @@
 			echo '</div>';
 
 			echo '<div class="index-content">';		
-				echo '<span class=""><img src="icon/icon-menu.png" id="open-navbar-side-menu"></span>';							
+				echo '<span class="icon-open"><img src="' . get_template_directory_uri() . '/img/icon/icon-menu.png" id="open-navbar-side-menu"></span>';							
 		}
 	?>
 
