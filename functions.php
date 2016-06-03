@@ -2,16 +2,8 @@
 /**
  * Proper way to enqueue scripts and styles
  */
-// Fonction pour éviter les conflits entre js et css et les inclures
-function wpdocs_theme_name_scripts() {    	
-	/**
-	*	Module
-	*/
-	wp_enqueue_style('style-menu', get_stylesheet_directory_uri() . '/css/menu.css' );
-	wp_enqueue_style('style-font', get_stylesheet_directory_uri() . '/css/font.css' );
-	/**
-	*	Général
-	*/
+// Fonction pour éviter les conflits entre js et css et les inclure
+function wpdocs_theme_name_scripts() {
     wp_enqueue_style( 'style-name', get_stylesheet_uri() );
     /**
     *	Javascript
@@ -182,10 +174,10 @@ add_action('after_setup_theme', 'custom_theme_setup');
 
 /* Creation d'un nouveau type de contenu (custom post-type) */
 function newCustomPostType(){
-	register_post_type('team', array(
+	register_post_type('event', array(
 			'labels' => array(
-					'name' => __('Equipe'),
-					'singular_label' => __('Membre')),
+					'name' => __('Evenements'),
+					'singular_label' => __('Evenement')),
 					'public' => true,
 					'has_archive' => true,
 					'menu_position' => 4,
