@@ -277,3 +277,23 @@ function save_custom(){
 // function pr ajouter des chps personnalisés 
 add_action("admin_init", "init_fields");
 add_action("save_post", "save_custom");
+
+
+
+/* ############  IMPORT DU CSS BACK-ADMIN  ############# */
+function admin_css() {
+	$admin_handle = 'admin_css';
+	$admin_stylesheet = get_template_directory_uri() . '/css/admin.css';
+
+	wp_enqueue_style( $admin_handle, $admin_stylesheet );
+}
+add_action('admin_print_styles', 'admin_css', 11 );
+
+/* ############  IMPORT DU JS BACK-ADMIN  ############# */
+function admin_js() {
+	$admin_handle = 'admin_js';
+	$admin_js = get_template_directory_uri() . '/js/admin.js';
+
+	wp_enqueue_script( $admin_handle, $admin_js );
+}
+add_action('admin_print_scripts', 'admin_js', 11 );
