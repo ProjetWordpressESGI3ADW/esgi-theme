@@ -4,6 +4,14 @@
  */
 // Fonction pour éviter les conflits entre js et css et les inclure
 function wpdocs_theme_name_scripts() {
+    /**
+	*	Module
+	*/
+	wp_enqueue_style('style-menu', get_stylesheet_directory_uri() . '/css/menu.css' );
+	wp_enqueue_style('style-font', get_stylesheet_directory_uri() . '/css/font.css' );
+	/**
+	*	Général
+	*/
     wp_enqueue_style( 'style-name', get_stylesheet_uri() );
     /**
     *	Javascript
