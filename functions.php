@@ -168,9 +168,12 @@ function newCustomPostType(){
 			'labels' => array(
 					'name' => __('Evenements'),
 					'singular_label' => __('Evenement')),
+					'all_items' => 'Tous les évenements',
+					'view_item' => 'Voir l\'évenement',
 					'public' => true,
 					'has_archive' => true,
 					'menu_position' => 4,
+					'menu_icon' => get_bloginfo('template_directory') . '/images/calend.png',
 					'supports' => array(
 						'title',
 						'thumbnail',
