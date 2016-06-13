@@ -211,6 +211,8 @@ add_action('after_setup_theme', 'custom_theme_setup');
 function wpdocs_register_meta_boxes() {
     add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
     add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
+    add_meta_box ( 'id_event_addImage', 'Image de l\'event', 'event_addImage_callback', ['event'], 'normal', 'low');
+
 }
 add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
  
@@ -242,11 +244,12 @@ function event_description_callback(){
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
 				<input type="text" name="post_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
-			<div class="inside">
-				<div id="edit-slug-box" class="hide-if-no-js">
-				</div>
-				<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="1d10d5b717">
-		  	</div>
+				<div class="inside">
+					<div id="edit-slug-box" class="hide-if-no-js">
+					</div>
+					<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="1d10d5b717">
+			  	</div>
+			</div>
 		  </div>';
 }
 
@@ -254,6 +257,22 @@ function event_datefin_callback(){
 	$dateMinimum = time() + (3600*24);
 	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
 	echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
+}
+
+function event_addImage_callback(){
+
+	echo('<div id="divUpload">
+		  	<div id="imagePath">
+				<input id="upload_image" type="text" placeholder="Url de l\'image">
+		  	</div>
+			<div id="wp-content-media-buttons" class="wp-media-buttons">
+				<button type="button" id="upload_image_button" class="button insert-media add_media" data-editor="content">
+					<span class="wp-media-buttons-icon"></span>Ajouter un média
+				</button>
+			</div>
+		   </div>');
+
+	//echo("<input type='file' id='eventImage' value='Ajouter une image'>");
 }
 
 function init_fields(){
@@ -297,3 +316,16 @@ function admin_js() {
 	wp_enqueue_script( $admin_handle, $admin_js );
 }
 add_action('admin_print_scripts', 'admin_js', 11 );
+
+/* ACTIVATION DU BOUTON DE RECHERCHE DE MEDIA  */
+function my_admin_scripts() {
+wp_enqueue_script('media-upload');
+wp_enqueue_script('thickbox');
+wp_register_script('my-upload', get_bloginfo('template_url') . '/js/admin.js', array('jquery','media-upload','thickbox'));
+wp_enqueue_script('my-upload');
+}
+function my_admin_styles() {
+wp_enqueue_style('thickbox');
+}
+add_action('admin_print_scripts', 'my_admin_scripts');
+add_action('admin_print_styles', 'my_admin_styles');
