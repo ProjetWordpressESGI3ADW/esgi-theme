@@ -1,6 +1,5 @@
 <?php
 	get_header();
-
 	?>	
 
 	<!-- Navbar Y -->
@@ -42,7 +41,7 @@
 	?>
 			
 		<?php
-		/*
+		
 		if(is_home()){
 			if(have_posts()){
 				while(have_posts()):
@@ -62,19 +61,23 @@
 			}else{
 				echo("Yolo t'as pas de post");
 			}
+		//Si on se trouve sur la page d'events
+		}else if(strpos(get_the_title(), "events") !== false){
+			the_content();
+			$loop = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10' ) );
+			while ( $loop->have_posts() ){
+				$loop->the_post();
+	       		echo('<h1>');the_title();echo('</h1>');
+			} 
+
+			wp_reset_query();			
 		}else{
-			while(have_posts()):
-				the_post();
-				?><h3><?php the_title();?></h3>
-				  <h4><?php the_content();?></h4>
-				 <?php 
-			endwhile;
-			echo("Pas sur la homePage");
+			echo("nul part");
 		}
 
 		if(is_active_sidebar('sidebar-1')){
 			dynamic_sidebar('sidebar-1');
-		}*/
+		}
 
 		get_footer();
 	?>
