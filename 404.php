@@ -2,8 +2,7 @@
 /**
  * The template for displaying 404 pages (Not Found).
  *
- * @package Superhero
- * @since Superhero 1.0
+ * @package Comics
  */
 
 get_header(); ?>
@@ -13,33 +12,32 @@ get_header(); ?>
 
 		<article id="post-0" class="post hentry error404 not-found">
 			<header class="entry-header">
-				<h1 class="entry-title"><?php _e( 'Oops! That page can&rsquo;t be found.', 'superhero' ); ?></h1>
-			</header><!-- .entry-header -->
+				<h1 class="entry-title"><?php _e( 'Page introuvable.', 'Comics' ); ?></h1>
+			</header>
 
 			<div class="entry-content">
-				<p><?php _e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'superhero' ); ?></p>
+				<p><?php _e( 'Contenu recherché introuvable.', 'Comics' ); ?></p>
 
 				<?php get_search_form(); ?>
-			</div><!-- .entry-content -->
-		</article><!-- #post-0 .post .error404 .not-found -->
+			</div>
+		</article>
 
-	</div><!-- #content .site-content -->
-</div><!-- #primary .content-area -->
+	</div>
+</div>
 
 <div id="not-found-secondary" class="widget-area" role="complementary">
 	<?php the_widget( 'WP_Widget_Recent_Posts' ); ?>
 	<div class="widget">
-		<h2 class="widgettitle"><?php _e( 'Most Used Categories', 'superhero' ); ?></h2>
+		<h2 class="widgettitle"><?php _e( 'Catégorie introuvable', 'Comics' ); ?></h2>
 		<ul>
 		<?php wp_list_categories( array( 'orderby' => 'count', 'order' => 'DESC', 'show_count' => 1, 'title_li' => '', 'number' => 10 ) ); ?>
 		</ul>
-	</div><!-- .widget -->
+	</div>
 
 	<?php
-	/* translators: %1$s: smilie */
-	$archive_content = '<p>' . sprintf( __( 'Try looking in the monthly archives. %1$s', 'superhero' ), convert_smilies( ':)' ) ) . '</p>';
+	$archive_content = '<p>' . sprintf( __( 'Erreur', 'Comics' ), convert_smilies( ':)' ) ) . '</p>';
 	the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$archive_content" );
 	?>
-</div><!-- #secondary .widget-area -->
+</div>
 
 <?php get_footer(); ?>
