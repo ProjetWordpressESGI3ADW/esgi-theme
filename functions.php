@@ -322,10 +322,11 @@ add_action('admin_print_styles', 'admin_css', 11 );
 function admin_js() {
 	$admin_handle = 'admin_js';
 	$admin_js = get_template_directory_uri() . '/js/admin.js';
+	var_dump("fdp");
 
 	wp_enqueue_script( $admin_handle, $admin_js );
 }
-add_action('admin_print_scripts', 'admin_js', 11 );
+// add_action('admin_print_scripts', 'admin_js', 11 );
 
 /* ACTIVATION DU BOUTON DE RECHERCHE DE MEDIA  */
 function my_admin_scripts() {
