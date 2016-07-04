@@ -19,7 +19,7 @@ var dom = {
 		return this._eventLabel;
 	},
 	changeEventCreationLabel: function(){
-		this.getEventLabel().text("Ajouter un nouvel Event ");
+		this.getEventLabel().text("Ajouter un nouvel event ");
 	}
 }
 
