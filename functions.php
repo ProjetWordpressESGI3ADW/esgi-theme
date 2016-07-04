@@ -107,18 +107,18 @@ function wpdocs_theme_slug_widgets_init() {
 */
 
 	$defaults = array(
-			'default-image'				=>	get_template_directory_uri().'/img/logo1.png',
-			'width'						=>	0,
-			'height'					=>	0,
-			'flex-height'				=>	'',
-			'flex-width'				=>	'',
-			'uploads'					=>	'',
-			'random-default'			=>	'',
-			'header-text'				=>	'',
-			'default-text-color'		=>	'',
-			'wp-head-callback'			=>	'',
-			'admin-head-callback'		=>	'',
-			'admin-preview-callback'	=>	'',
+		'default-image'				=>	get_template_directory_uri().'/images/logo.png',
+		'width'						=> 0,
+		'height'					=> 0,
+		'flex-height'				=> false,
+		'flex-width'				=> false,
+		'uploads'					=> true,
+		'random-default'			=> false,
+		'header-text'				=> true,
+		'default-text-color'		=> '',
+		'wp-head-callback'			=> '',
+		'admin-head-callback'		=> '',
+		'admin-preview-callback'	=> ''
 	);
 	add_theme_support('custom-header', $defaults);
 
