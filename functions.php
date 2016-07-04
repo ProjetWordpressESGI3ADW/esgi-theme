@@ -16,15 +16,20 @@ function wpdocs_theme_name_scripts() {
     wp_enqueue_style( 'style-name', get_stylesheet_uri() );
     /**
     *	Javascript
-    */    
+    */
     wp_enqueue_script('jquery');
     wp_enqueue_script( 'script-menu', get_template_directory_uri() . '/js/menu.js');
     wp_enqueue_script( 'script-example', get_template_directory_uri() . '/js/example.js');
     /**
 	*	Bootstrap
 	*/
-	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );		
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
     wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
+    /**
+     * Custom css
+     */
+    wp_enqueue_style('global-css', get_stylesheet_directory_uri() . '/css/global.css' );
+
 }
 add_action( 'wp_enqueue_scripts', 'wpdocs_theme_name_scripts' );
 
@@ -33,6 +38,11 @@ function menus(){
 	register_nav_menu('x_menu','Menu horizontal');
 	register_nav_menu('y_menu','Menu vertical');
 }
+function custom_nav_class($classes, $item){
+        $classes[] = "toto";
+        return $classes;
+}
+add_filter('nav_menu_css_class' , 'custom_nav_class' , 10 , 2);
 add_action('init', 'menus');
 
 /**
@@ -58,20 +68,20 @@ function wpdocs_theme_slug_widgets_init() {
 		register_widget('link_custom');
 	}
 	add_action('widgets_init', 'my_widgets');
-	
+
 	/**
-	* 
+	*
 	*/
 	class link_custom extends WP_Widget
 	{
 		public function link_custom(){
 			parent::__construct(false, 'link_custom');
 			$options = array(
-				'classname'		=>	'link-custom', 
-				'description'	=>	'ceci est notre premier widget' 
+				'classname'		=>	'link-custom',
+				'description'	=>	'ceci est notre premier widget'
 			);
 			$this->WP_Widget('link-custom', 'Lien personnalisé', $options);
-		}		
+		}
 		public function widget($args, $instance){
 			// Widget output
 			echo '<a href="'.$instance["url"].'" class="custom-url">'.$instance["name"].'</a>';
@@ -107,18 +117,18 @@ function wpdocs_theme_slug_widgets_init() {
 */
 
 	$defaults = array(
-			'default-image'				=>	get_template_directory_uri().'/img/logo1.png',
-			'width'						=>	0,
-			'height'					=>	0,
-			'flex-height'				=>	'',
-			'flex-width'				=>	'',
-			'uploads'					=>	'',
-			'random-default'			=>	'',
-			'header-text'				=>	'',
-			'default-text-color'		=>	'',
-			'wp-head-callback'			=>	'',
-			'admin-head-callback'		=>	'',
-			'admin-preview-callback'	=>	'',
+		'default-image'				=>	get_template_directory_uri().'/images/logo.png',
+		'width'						=> 0,
+		'height'					=> 0,
+		'flex-height'				=> false,
+		'flex-width'				=> false,
+		'uploads'					=> true,
+		'random-default'			=> false,
+		'header-text'				=> true,
+		'default-text-color'		=> '',
+		'wp-head-callback'			=> '',
+		'admin-head-callback'		=> '',
+		'admin-preview-callback'	=> ''
 	);
 	add_theme_support('custom-header', $defaults);
 
@@ -215,7 +225,7 @@ function wpdocs_register_meta_boxes() {
 
 }
 add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
- 
+
 /**
  * Meta box display callback.
  *
@@ -224,7 +234,7 @@ add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
 function wpdocs_my_display_callback( $post ) {
     echo '<script>alert('.$post.')</script>';
 }
- 
+
 /**
  * Save meta box content.
  *
@@ -288,12 +298,12 @@ function id_poste(){
 
 function save_custom(){
 	global $post;
-	// fonction pour eviter le vidage des champs personalisés lors de la 
+	// fonction pour eviter le vidage des champs personalisés lors de la
 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 		return $postID;
 	update_post_meta($post->ID, "id_poste", $_POST["id_poste"]);
 }
-// function pr ajouter des chps personnalisés 
+// function pr ajouter des chps personnalisés
 add_action("admin_init", "init_fields");
 add_action("save_post", "save_custom");
 
