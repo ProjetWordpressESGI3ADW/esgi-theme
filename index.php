@@ -23,8 +23,8 @@
 	?>
 
 		<?php
-
-		if(is_home()){
+		
+		if(is_home()){ // vérifie si l'on est dans la page homepage ou articles
 			if(have_posts()){
 				while(have_posts()):
 					the_post();
@@ -41,20 +41,22 @@
 					 <?php
 				endwhile;
 			}else{
-				echo("Yolo t'as pas de post");
+				echo("contenu introuvable");
 			}
 		//Si on se trouve sur la page d'events
-		}else if(strpos(get_the_title(), "events") !== false){
+		}else if(strpos(get_the_title(), "events") !== false){ // si l'on n'est pas dans homepage
 			the_content();
 			$loop = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10' ) );
 			while ( $loop->have_posts() ){
 				$loop->the_post();
-	       		echo('<h1>');the_title();echo('</h1>');
-			}
+	       		echo('<h1>');
+					the_title();
+				echo('</h1>');
+			} 
 
-			wp_reset_query();
+			wp_reset_query();			
 		}else{
-			echo("nul part");
+			echo("post introuvable");
 		}
 
 		if(is_active_sidebar('sidebar-1')){
