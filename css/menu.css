@@ -21,7 +21,7 @@
   border:none;
   transition:.3s padding-top ease,.5s transform ease;
   z-index:-1;
-  color:#ffffff;      
+  color:#ffffff;
 }
 
 .navbar-side-menu-collapse{
@@ -64,3 +64,12 @@
 
 
 
+/* 
+  MENU HORIZONTAL (x_menu)  
+*/
+.x-menu-logo-a{
+  /*padding: 10px 0;*/
+}
+.x-menu-logo-img{
+  height: 100%;
+}
