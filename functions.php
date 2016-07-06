@@ -23,7 +23,7 @@ function wpdocs_theme_name_scripts() {
     /**
 	*	Bootstrap
 	*/
-	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );	
     wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
     /**
      * Custom css
@@ -190,23 +190,29 @@ function create_post_type() {
 function newCustomPostType(){
 	register_post_type('event', array(
 			'labels' => array(
-					'name' => __('Evenements'),
-					'singular_label' => __('Evenement')),
-					'all_items' => 'Tous les évenements',
-					'view_item' => 'Voir l\'évenement',
-					'public' => true,
-					'has_archive' => true,
-					'menu_position' => 4,
-					'menu_icon' => get_bloginfo('template_directory') . '/images/calend.png',
-					'supports' => array(
-						'title',
-						'thumbnail',
-						'revisions',
+				'name' => __('Evenements'),
+				'singular_label' => __('Evenement')
+			),
+			'all_items' => 'Tous les évenements',
+			'view_item' => 'Voir l\'évenement',
+			'public' => true,
+			'has_archive' => true,
+			'menu_position' => 4,
+			'menu_icon' => get_bloginfo('template_directory') . '/images/calend.png',
+			'supports' => array(
+				'title',
+				'thumbnail',
+				'revisions',
 				)
 			));
 	register_taxonomy( 'Ajouter Categorie', 'event', array( 'hierarchical' => true, 'label' => 'Ajouter Categorie', 'query_var' => true, 'rewrite' => true ));
 }
 add_action('init', 'newCustomPostType');
+function my_rewrite_flush() {
+    newCustomPostType();
+    flush_rewrite_rules();
+}
+add_action( 'after_switch_theme', 'my_rewrite_flush' );
 
 // Add post thumbnails
 /*function custom_theme_setup(){
@@ -218,13 +224,15 @@ add_action('after_setup_theme', 'custom_theme_setup');
 /**
  * Register meta box(es).
  */
+
+
 function wpdocs_register_meta_boxes() {
-    add_meta_box ( 'id_event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
-    add_meta_box ( 'id_event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
-    add_meta_box ( 'id_event_addImage', 'Image de l\'event', 'event_addImage_callback', ['event'], 'normal', 'low');
+    add_meta_box ( 'event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
+    add_meta_box ( 'event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
+    add_meta_box ( 'event_addImage', 'Image de l\'event', 'event_addImage_callback', ['event'], 'normal', 'low');
 
 }
-add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+// add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
 
 /**
  * Meta box display callback.
@@ -250,63 +258,170 @@ add_action( 'save_post', 'wpdocs_save_meta_box' );
 add_action( 'add_meta_boxes', 'Titre' );*/
 
 function event_description_callback(){
-	echo '<div id="descriptiondiv">
+	global $post;
+	$val = get_post_meta($post->ID, 'event_description');
+	// var_dump($val);
+	if(strlen(trim($val[0])) > 0){
+		echo '<div id="descriptiondiv">
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
-				<input type="text" name="post_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
-				<div class="inside">
-					<div id="edit-slug-box" class="hide-if-no-js">
-					</div>
-					<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="1d10d5b717">
-			  	</div>
+				<input type="text" name="event_description" size="30" value="'.$val[0].'" id="description" spellcheck="true" autocomplete="off">
+				
 			</div>
 		  </div>';
+	}
+	else{
+		echo '<div id="descriptiondiv">
+			<div id="description-wrap">
+				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
+				<input type="text" name="event_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
+				
+			</div>
+		  </div>';
+		 }
 }
 
 function event_datefin_callback(){
 	$dateMinimum = time() + (3600*24);
 	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
-	echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
+
+	global $post;
+	$val = get_post_meta($post->ID, 'event_datefin');
+	// var_dump($val);
+	if(strlen(trim($val[0])) > 0)
+		echo '<input type="date" min="'.$dateMinimum.'" max="" id="id_event_datefin" required placeholder="Choisissez la date de fin de votre event" name="event_datefin" value="'.$val[0].'">';
+	else
+		echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" id="id_event_datefin" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
 }
 
-function event_addImage_callback(){
-
-	echo('<div id="divUpload">
-		  	<div id="imagePath">
-				<input id="upload_image" type="text" placeholder="Url de l\'image">
-		  	</div>
-			<div id="wp-content-media-buttons" class="wp-media-buttons">
-				<button type="button" id="upload_image_button" class="button insert-media add_media" data-editor="content">
-					<span class="wp-media-buttons-icon"></span>Ajouter un média
-				</button>
-			</div>
-		   </div>');
+function event_addImage_callback(){	
+	global $post;
+	var_dump($post);
+	$val = get_post_meta($post->ID, 'upload_image');
+	if(strlen(trim($val[0])) > 0){
+		$clientPath = explode('/', $val[0]);
+		$clientPath = get_template_directory_uri().'/images/event/'.$clientPath[count($clientPath)-1];
+		echo('
+			<img id="event_already_uploaded_img"  src="'.$clientPath.'" alt="post'.$post->ID.'">
+			<figcaption id="event_already_uploaded_img_figcaption">Image courante</figcaption>
+			<div id="id_event_addImage">
+			<input class="img-responsive" id="event_addImage" name="event_addImage" type="file">
+	  	</div>');
+	}
+	else
+		echo('<div id="id_event_addImage">
+			<input id="event_addImage" name="event_addImage" type="file">
+	  	</div>');
 
 	//echo("<input type='file' id='eventImage' value='Ajouter une image'>");
 }
 
 function init_fields(){
+	// echo "<script>alert('on est dans init_fields()');</script>";
 	add_meta_box('id_poste', 'Poste au sein de l\'entreprise', 'id_poste', 'team');
+	add_meta_box ( 'event_description', 'Description', 'event_description_callback', ['event'], 'normal', 'high');
+    add_meta_box ( 'event_datefin', 'Date de fin', 'event_datefin_callback', ['event'], 'normal', 'low');
+    add_meta_box ( 'event_addImage', 'Image de l\'event', 'event_addImage_callback', ['event'], 'normal', 'low');
 }
 
 function id_poste(){
+	echo "<script>alert('on est dans id_poste()');</script>";
 	global $post;
 	$custom = get_post_custom($post->ID);
 	$id_poste = $custom["id_poste"][0];
 	echo '<input size="70" type="text" value="'.$id_poste.'" name="id_poste"/>';
 }
 
+function validateEventDate($string){
+	$date = DateTime::createFromFormat('Y-m-d', $string);
+	if(!!$date)
+		return $string;
+	return false;
+}
+
+function validateEventDescription($string){
+	$string = trim($string);
+	$authorizedChars= "a-z0-9 ,\.=\!éàôûîêçùèâ@\(\)\?";
+	if(preg_match("/[^".$authorizedChars."]/i", $string))
+		return false;
+	return $string;
+}
+function renameEventFile($postId, $path, $format){
+	$finalPath = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event/'.$postId.'.'.$format;
+	// var_dump($finalPath);
+	echo "<script>alert('".$finalPath."');</script>";
+	touch($finalPath);
+	$r = move_uploaded_file($path, $finalPath);
+	if($r) return $finalPath;
+	return false;
+}
+function validateEventImg(array $upFile){
+	if($upFile['size'] > 2000000) return false;
+	if($upFile['error'] > 0) return false; 
+	$type = $upFile['type'];
+	if(is_bool(strpos($type, 'image'))) return false;
+	$authorizedFormats = ['png', 'jpg', 'jpeg', 'gif'];
+	$name = $upFile['name'];
+	$format = explode('.', $name);
+	$format = $format[count($format)-1];
+	if(!(in_array($format, $authorizedFormats))) return false;
+
+	return ['path' => $upFile['tmp_name'], 'format' => $format];
+}
+
 function save_custom(){
 	global $post;
+	// var_dump($post);
+	// var_dump($_POST);
+	// var_dump($_FILES);
+	// exit;
+	if($post->post_type == 'event'){
+		// On enregistre donc les informations d'une contenu de type event 
+		$id = $post->ID;
+		$newDateFin = validateEventDate($_POST['event_datefin']);
+		if(!$newDateFin){
+			var_dump("FAIL DATE");
+			return;
+		}
+
+
+		$description = validateEventDescription($_POST['event_description']);
+		if(!$description){
+			var_dump("FAIL DESCRIPTION");
+			return;
+		}
+
+		$newImg = validateEventImg($_FILES['event_addImage']);
+		if(!$newImg){
+			var_dump("FAIL IMG");
+			return;
+		}
+		$newImg = renameEventFile($id, $newImg['path'], $newImg['format']);
+		if(!$newImg){
+			var_dump("FAIL TO MOVE FILE");
+			return false;
+		}
+
+		update_post_meta($id, 'event_datefin', $newDateFin);
+		update_post_meta($id, 'event_description', $description);
+		update_post_meta($id, 'upload_image', $newImg);
+		return;
+	}
+	
 	// fonction pour eviter le vidage des champs personalisés lors de la
 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-		return $postID;
+		return $post->ID;
 	update_post_meta($post->ID, "id_poste", $_POST["id_poste"]);
 }
 // function pr ajouter des chps personnalisés
-add_action("admin_init", "init_fields");
 add_action("save_post", "save_custom");
+add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+add_action("admin_init", "init_fields");
 
+function register_my_setting() {
+	register_setting( 'my_options_group', 'my_option_name', 'intval' ); 
+} 
+add_action( 'admin_init', 'register_my_setting' );
 
 
 /* ############  IMPORT DU CSS BACK-ADMIN  ############# */
@@ -330,13 +445,15 @@ function admin_js() {
 
 /* ACTIVATION DU BOUTON DE RECHERCHE DE MEDIA  */
 function my_admin_scripts() {
-wp_enqueue_script('media-upload');
-wp_enqueue_script('thickbox');
-wp_register_script('my-upload', get_bloginfo('template_url') . '/js/admin.js', array('jquery','media-upload','thickbox'));
-wp_enqueue_script('my-upload');
+	wp_enqueue_script('media-upload');
+	wp_enqueue_script('thickbox');
+	wp_register_script('my-upload', get_bloginfo('template_url') . '/js/admin.js', array('jquery','media-upload','thickbox'));
+	wp_enqueue_script('my-upload');
 }
 function my_admin_styles() {
-wp_enqueue_style('thickbox');
+	wp_enqueue_style('thickbox');
 }
 add_action('admin_print_scripts', 'my_admin_scripts');
 add_action('admin_print_styles', 'my_admin_styles');
+
+
