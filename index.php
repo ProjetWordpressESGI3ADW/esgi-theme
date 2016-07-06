@@ -9,6 +9,7 @@
 				the_content();
 				$loop = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10' ) );
 				foreach ($loop->posts as $key => $post){
+					var_dump($post);
 					$eventEndDate = date("d F, Y", strtotime(get_post_meta($post->ID, 'event_datefin')[0]));
 
 					$val = get_post_meta($post->ID, 'upload_image');
@@ -18,7 +19,7 @@
 
 					echo 
 					"<div>
-						<h1>". $post->post_title . "</h1>
+						<h1><a href='".get_page_uri($post->ID)."''>". $post->post_title . "</a></h1>
 						<p>" . get_post_meta($post->ID, 'event_description')[0] . "</p>
 						<p>End event : " . $eventEndDate . "</p>
 
