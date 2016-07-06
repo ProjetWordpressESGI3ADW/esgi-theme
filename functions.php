@@ -260,7 +260,8 @@ add_action( 'add_meta_boxes', 'Titre' );*/
 function event_description_callback(){
 	global $post;
 	$val = get_post_meta($post->ID, 'event_description');
-	// var_dump($val);
+	if(isset($_SESSION['event_up_msg_description']))
+		echo '<p class="event_upload_error_msg">'.$_SESSION['event_up_msg_description'].'</p>';
 	if(strlen(trim($val[0])) > 0){
 		echo '<div id="descriptiondiv">
 			<div id="description-wrap">
@@ -279,24 +280,30 @@ function event_description_callback(){
 			</div>
 		  </div>';
 		 }
+
+	if(isset($_SESSION['event_up_msg_description'])) unset($_SESSION['event_up_msg_description']);
 }
 
 function event_datefin_callback(){
 	$dateMinimum = time() + (3600*24);
 	$dateMinimum = date ( 'Y-m-d', $dateMinimum );
-
 	global $post;
 	$val = get_post_meta($post->ID, 'event_datefin');
-	// var_dump($val);
+	if(isset($_SESSION['event_up_msg_date']))
+		echo '<p class="event_upload_error_msg">'.$_SESSION['event_up_msg_date'].'</p>';
 	if(strlen(trim($val[0])) > 0)
 		echo '<input type="date" min="'.$dateMinimum.'" max="" id="id_event_datefin" required placeholder="Choisissez la date de fin de votre event" name="event_datefin" value="'.$val[0].'">';
 	else
 		echo '<input type="date" value="'.$dateMinimum.'" min="'.$dateMinimum.'" max="" id="id_event_datefin" required placeholder="Choisissez la date de fin de votre event" name="event_datefin">';
+
+	if(isset($_SESSION['event_up_msg_date'])) unset($_SESSION['event_up_msg_date']);
 }
 
 function event_addImage_callback(){	
 	global $post;
 	// var_dump($post);
+	if(isset($_SESSION['event_up_msg_img']))
+		echo '<p class="event_upload_error_msg">'.$_SESSION['event_up_msg_img'].'</p>';
 	$val = get_post_meta($post->ID, 'upload_image');
 	if(strlen(trim($val[0])) > 0){
 		$clientPath = explode('/', $val[0]);
@@ -313,7 +320,7 @@ function event_addImage_callback(){
 			<input id="event_addImage" name="event_addImage" type="file">
 	  	</div>');
 
-	//echo("<input type='file' id='eventImage' value='Ajouter une image'>");
+	if(isset($_SESSION['event_up_msg_img'])) unset($_SESSION['event_up_msg_img']);
 }
 
 function init_fields(){
@@ -342,8 +349,10 @@ function validateEventDate($string){
 function validateEventDescription($string){
 	$string = trim($string);
 	$authorizedChars= "a-z0-9 ,\.=\!éàôûîêçùèâ@\(\)\?";
-	if(preg_match("/[^".$authorizedChars."]/i", $string))
+	if(preg_match("/[^".$authorizedChars."]/i", $string)){
+		$_SESSION["event_up_msg_description"] = "here are the only authorized characters for your description : ".str_replace('\\', '', $authorizedChars);
 		return false;
+	}
 	return $string;
 }
 function renameEventFile($postId, $path, $format){
@@ -372,7 +381,6 @@ function validateEventImg(array $upFile){
 function save_custom(){
 	global $post;
 	// var_dump($post);
-	// var_dump($_POST);
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
@@ -380,31 +388,32 @@ function save_custom(){
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
 		if(!$newDateFin){
-			var_dump("FAIL DATE");
+			$_SESSION["event_up_msg_date"] = "date needs to be on american format using: YYYY-mm-dd";
 			return;
 		}
 
 
 		$description = validateEventDescription($_POST['event_description']);
-		if(!$description){
-			var_dump("FAIL DESCRIPTION");
+		if(!$description)
 			return;
-		}
 
 		$newImg = validateEventImg($_FILES['event_addImage']);
-		if(!$newImg){
-			var_dump("FAIL IMG");
+
+		$imgAlrdyExists = file_exists(trim(get_post_meta($post->ID, 'upload_image')[0]));
+
+		if(!$newImg && !$imgAlrdyExists){
+			$_SESSION["event_up_msg_img"] = "your image needs to be a png, jpeg, jpg or gif file";
 			return;
 		}
 		$newImg = renameEventFile($id, $newImg['path'], $newImg['format']);
-		if(!$newImg){
-			var_dump("FAIL TO MOVE FILE");
+		if(!$newImg && !$imgAlrdyExists){
+			$_SESSION["event_up_msg_img"] = "your image couldn't be moved and parsed on server side !";
 			return false;
 		}
-
 		update_post_meta($id, 'event_datefin', $newDateFin);
 		update_post_meta($id, 'event_description', $description);
-		update_post_meta($id, 'upload_image', $newImg);
+		if(!!$newImg)
+			update_post_meta($id, 'upload_image', $newImg);
 		return;
 	}
 	
