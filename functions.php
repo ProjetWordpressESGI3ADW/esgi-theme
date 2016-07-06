@@ -296,7 +296,7 @@ function event_datefin_callback(){
 
 function event_addImage_callback(){	
 	global $post;
-	var_dump($post);
+	// var_dump($post);
 	$val = get_post_meta($post->ID, 'upload_image');
 	if(strlen(trim($val[0])) > 0){
 		$clientPath = explode('/', $val[0]);
