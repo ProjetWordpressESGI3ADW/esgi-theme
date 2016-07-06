@@ -4,6 +4,7 @@
 		<meta charset=<?php bloginfo("charset");?>>
 		<title><?php wp_title();?></title>
 		<?php wp_head(); ?>
+		<?php $racine = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']; ?>
 	</head>
 	<body>
 		<header>
@@ -18,7 +19,7 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 							</button>
-							<a class=" navbar-brand x-menu-logo-a " href=""><img class="x-menu-logo-img" src="<?php header_image(); ?>" alt="logo"></a>
+							<a class=" navbar-brand x-menu-logo-a " href="<?php echo $racine; ?>"><img class="x-menu-logo-img" src="<?php header_image(); ?>" alt="logo"></a>
 						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
