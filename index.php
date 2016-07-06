@@ -8,20 +8,27 @@
 			if(have_posts()){
 				the_content();
 				$loop = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10' ) );
-				// var_dump($loop);
-				// get_post_custom_values('event_datefin');
-				while ( $loop->have_posts() ){
-					$loop->the_post();
-					// var_dump(the_title());
-		       		echo('<h1>');
-						the_title();
-					echo('</h1>');
-		       		echo('<p>');
-						the_content();
-					echo('</p>');
-				} 
+				foreach ($loop->posts as $key => $post){
+					$eventEndDate = date("d F, Y", strtotime(get_post_meta($post->ID, 'event_datefin')[0]));
 
-			wp_reset_query();	
+					$val = get_post_meta($post->ID, 'upload_image');
+					$imgPath = explode('/', $val[0]);
+					$imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
+
+
+					echo 
+					"<div>
+						<h1>". $post->post_title . "</h1>
+						<p>" . get_post_meta($post->ID, 'event_description')[0] . "</p>
+						<p>End event : " . $eventEndDate . "</p>
+
+						<div>
+							<img src='".$imgPath."' alt=''>
+						</div>
+
+					</div>";			
+				}
+				wp_reset_query();	
 			}else{
 				echo("contenu introuvable");
 			}
