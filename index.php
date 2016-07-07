@@ -18,17 +18,17 @@
 					$imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
 
 
-					// echo
-					// "<div>
-					// 	<h1><a href='".get_page_uri($post->ID)."''>". $post->post_title . "</a></h1>
-					// 	<p>" . get_post_meta($post->ID, 'event_description')[0] . "</p>
-					// 	<p>End event : " . $eventEndDate . "</p>
-					//
-					// 	<div>
-					// 		<img src='".$imgPath."' alt=''>
-					// 	</div>
-					//
-					// </div>";
+					echo
+					"<div>
+						<h1><a href='".get_page_uri($post->ID)."''>". $post->post_title . "</a></h1>
+						<p>" . get_post_meta($post->ID, 'event_description')[0] . "</p>
+						<p>End event : " . $eventEndDate . "</p>
+
+						<div>
+							<img src='".$imgPath."' alt=''>
+						</div>
+
+					</div>";
 				}
 				wp_reset_query();
 			}else{
@@ -42,36 +42,3 @@
 			echo("post introuvable");
 		}
 ?>
-
-		<?php get_header(); ?>
-
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-
-		<?php if ( have_posts() ) : ?>
-			<?php while ( have_posts() ) : the_post(); ?>
-
-				<?php get_template_part( 'template-parts/content', get_post_format() ); ?>
-
-			<?php endwhile; ?>
-
-			<?php the_posts_navigation(); ?>
-
-		<?php else : ?>
-
-			<?php get_template_part( 'template-parts/content', 'none' ); ?>
-
-		<?php endif; ?>
-
-		</main>
-	</div>
-
-<?php get_footer(); ?>
-
-		// if(is_active_sidebar('sidebar-1')){
-		// 	dynamic_sidebar('sidebar-1');
-		// }
-
-		get_footer();
-	?>
-	</div>
