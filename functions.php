@@ -495,12 +495,14 @@ function validateEventImg(array $upFile){
 function save_custom(){
 	global $post;
 	// var_dump($post);
+	// var_dump($_POST);
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
 		// On enregistre donc les informations d'une contenu de type event 
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
+		echo "on a checké la date";
 		if(!$newDateFin){
 			$_SESSION["event_up_msg_date"] = "date needs to be on american format using: YYYY-mm-dd";
 			return;
@@ -508,10 +510,12 @@ function save_custom(){
 
 
 		$description = validateEventDescription($_POST['event_description']);
+		echo "on a checké la description";
 		if(!$description)
 			return;
 
 		$newImg = validateEventImg($_FILES['event_addImage']);
+		echo "on a checké l'image";
 
 		$imgAlrdyExists = file_exists(trim(get_post_meta($post->ID, 'upload_image')[0]));
 
@@ -520,10 +524,12 @@ function save_custom(){
 			return;
 		}
 		$newImg = renameEventFile($id, $newImg['path'], $newImg['format']);
+		echo "on a rename l'image reçue";
 		if(!$newImg && !$imgAlrdyExists){
 			$_SESSION["event_up_msg_img"] = "your image couldn't be moved and parsed on server side !";
 			return false;
 		}
+		echo "on va update !";
 		update_post_meta($id, 'event_datefin', $newDateFin);
 		update_post_meta($id, 'event_description', $description);
 		if(!!$newImg)
@@ -580,3 +586,30 @@ add_action('admin_print_scripts', 'my_admin_scripts');
 add_action('admin_print_styles', 'my_admin_styles');
 
 
+//Creation de la table vote lors d'un changement de thème (si elle n'existe pas)
+
+function create_vote_table(){
+
+	global $wpdb;
+
+    $table_name = $wpdb->prefix . 'vote';
+    $table_name2 = $wpdb->prefix . 'image';
+    
+
+    $sql = "CREATE TABLE $table_name (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      mail varchar(80) NOT NULL,
+      image int(11) NOT NULL,
+      post int(11) NOT NULL,
+      UNIQUE KEY id (id)
+    );CREATE TABLE $table_name2 (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      post int(11) NOT NULL,
+      src varchar(80) NOT NULL,
+      UNIQUE KEY id (id)
+    );";
+
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
+}
+add_action('after_switch_theme', 'create_vote_table');

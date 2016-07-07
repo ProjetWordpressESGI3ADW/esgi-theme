@@ -16,3 +16,12 @@
 	margin-right: 50px;
 	background: #ECECEC none repeat scroll 0% 0%;
 }
+
+.fixed{
+	position: fixed;
+}
+
+#toi-aussi-upload-ton-img{
+	top: calc(50%);
+	right: 0;
+}
