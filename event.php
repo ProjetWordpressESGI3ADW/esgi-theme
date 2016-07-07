@@ -19,7 +19,7 @@
 				// var_dump($resultats[0]->nb);
 				// var_dump((int)$resultats[0]->nb);
 				// // var_dump();
-				if((int) $resultats[0]->nb == 0){
+				if((int) $resultats[0]->nb == 0 || is_null($resultats[0])){
 					echo "tu peux enregistrer ton image maggle";
 
 					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
@@ -46,26 +46,15 @@
 					}
 					else
 						echo "CE NOM D'IMAGE EST DEJA UTILISE";
-				/*
-
-				$wpdb->insert(
-			    	$wpdb->prefix.'vote',
-				    array(
-				        'post' => $idpost,
-				        'src' => $finalPath,
-				        'name' => $name,
-				        'email' => $mail,
-				    ),
-				    array(
-				        '%d',
-				        '%s',
-				        '%s',
-				        '%s'
-				    )
-				);
-				*/	
+				}else{
+					echo 'wtf1';
 				}
+			}else{
+				echo 'wtf2';
+				var_dump($resultats);
 			}
+		}else{
+			echo 'wtf3';
 		}
 	}
 /* ##########  POST DE VOTE ########### */
