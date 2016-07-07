@@ -1,4 +1,5 @@
 <?php
+
 function validateEventImg(array $upFile){
 	if($upFile['size'] > 2000000){
 		$_SESSION['event_error'] = "img has to weight less than 2MB !";
@@ -38,9 +39,10 @@ foreach ($args as $key => $value) {
 	}
 }
 $newImg = validateEventImg($_FILES['event_proposed_drawing']);
-if(!!$newImg){
+if(!!$newImg){	
+	global $idpost;
+	var_dump($idpost);
 	// $newImg = (renameEventFile())
 }
-	
 
 // header('Location: '. get_template_directory_uri());
