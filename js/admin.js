@@ -91,5 +91,101 @@ var rechercheMedia ={
 	},
 }
 
+/** SCRIPTS POUR LA PAGE D'OPTIONS **/
+jQuery(document).ready(function() {
+	jQuery('#Brgb').click(function(){
+		
+		var txt = document.getElementById('backgroundRGB');
+		if(txt == null){
+			jQuery('#Brgb').after('<input type="text" id="backgroundRGB" name="background" style="display:none">')
+		}
+
+		if(jQuery('#backgroundRGB').css('display') == "none"){
+			jQuery('#backgroundRGB').css('display', 'inline');
+		}
+	})
+
+	jQuery('.Bradio').on('click', function(){
+		var txt = document.getElementById('backgroundRGB');
+		if(txt != null){
+			jQuery('#backgroundRGB').remove();
+		}
+	})
+
+	
+	jQuery('#Trgb').click(function(){
+		var txt = document.getElementById('textRGB');
+		if(txt == null){
+			jQuery('#Trgb').after('<input type="text" id="textRGB" name="text_color" style="display:none">')
+		}
+
+		if(jQuery('#textRGB').css('display') == "none"){
+			jQuery('#textRGB').css('display', 'inline');
+		}
+	})
+
+	jQuery('.Tradio').on('click', function(){
+		var txt = document.getElementById('textRGB');
+		if(txt != null){
+			jQuery('#textRGB').remove();
+		}
+	})
+
+	jQuery('#Argb').click(function(){
+		var txt = document.getElementById('ARGB');
+		if(txt == null){
+			jQuery('#Argb').after('<input type="text" id="ARGB" name="a_color" style="display:none">')
+		}
+
+
+		if(jQuery('#ARGB').css('display') == "none"){
+			jQuery('#ARGB').css('display', 'inline');
+		}
+	})
+
+	jQuery('.Aradio').on('click', function(){
+		var txt = document.getElementById('ARGB');
+		if(txt != null){
+			jQuery('#ARGB').remove();
+		}
+	})
+
+	jQuery('#Ahrgb').click(function(){
+		var txt = document.getElementById('AHRGB');
+		if(txt == null){
+			jQuery('#Ahrgb').after('<input type="text" id="AHRGB" name="ahover_color" style="display:none">')
+		}
+
+		if(jQuery('#AHRGB').css('display') == "none"){
+			jQuery('#AHRGB').css('display', 'inline');
+		}
+	})
+
+	jQuery('.Ahoveradio').on('click', function(){
+		var txt = document.getElementById('AHRGB');
+		if(txt != null){
+			jQuery('#AHRGB').remove();
+		}
+	})
+
+	jQuery('#H2rgb').click(function(){
+		var txt = document.getElementById('H2RGB');
+		if(txt == null){
+			jQuery('#H2rgb').after('<input type="text" id="H2RGB" name="h2_color" style="display:none">')
+		}
+
+		if(jQuery('#H2RGB').css('display') == "none"){
+			jQuery('#H2RGB').css('display', 'inline');
+		}
+	})
+
+	jQuery('.h2radio').on('click', function(){
+		var txt = document.getElementById('H2RGB');
+		if(txt != null){
+			jQuery('#H2RGB').remove();
+		}
+	})
+	
+});
 
 /*edit.php?post_type=event*/
