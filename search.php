@@ -1,12 +1,16 @@
 <?php get_header(); ?>
 
-	<div id="primary" class="content-area">
+	<section id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
 		<?php if ( have_posts() ) : ?>
+
+			<header class="page-header">
+				<h1 class="page-title"><?php printf( esc_html__( 'Résultats de la recherche pour : %s', 'esgi' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
+			</header>
 			<?php while ( have_posts() ) : the_post(); ?>
 
-				<?php get_template_part( 'template-parts/content', get_post_format() ); ?>
+				<?php get_template_part( 'template-parts/content', 'search' );?>
 
 			<?php endwhile; ?>
 
@@ -19,6 +23,6 @@
 		<?php endif; ?>
 
 		</main>
-	</div>
+	</section>
 
 <?php get_footer(); ?>
