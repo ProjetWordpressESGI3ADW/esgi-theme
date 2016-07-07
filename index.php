@@ -2,14 +2,15 @@
 	get_header();
 
 
-
+		// var_dump(get_post());
 		// vérifie si l'on est dans la page homepage ou events
-		if(is_home() || strpos(get_the_title(), "events") !== false){
+		if(is_home() || is_numeric(strpos(get_post()->post_type, "even"))){
+			// echo "enculer";
 			if(have_posts()){
-				the_content();
+				// the_content();
 				$loop = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10' ) );
 				foreach ($loop->posts as $key => $post){
-					var_dump($post);
+					// var_dump($post);
 					$eventEndDate = date("d F, Y", strtotime(get_post_meta($post->ID, 'event_datefin')[0]));
 
 					$val = get_post_meta($post->ID, 'upload_image');
@@ -33,6 +34,9 @@
 			}else{
 				echo("contenu introuvable");
 			}
+		}
+		else if(is_numeric(strpos(get_post()->post_type, "page"))){
+			echo "ceci est donc une page maggle !";
 		}
 		else{
 			echo("post introuvable");
