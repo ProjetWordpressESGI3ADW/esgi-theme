@@ -495,12 +495,14 @@ function validateEventImg(array $upFile){
 function save_custom(){
 	global $post;
 	// var_dump($post);
+	// var_dump($_POST);
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
 		// On enregistre donc les informations d'une contenu de type event 
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
+		echo "on a checké la date";
 		if(!$newDateFin){
 			$_SESSION["event_up_msg_date"] = "date needs to be on american format using: YYYY-mm-dd";
 			return;
@@ -508,10 +510,12 @@ function save_custom(){
 
 
 		$description = validateEventDescription($_POST['event_description']);
+		echo "on a checké la description";
 		if(!$description)
 			return;
 
 		$newImg = validateEventImg($_FILES['event_addImage']);
+		echo "on a checké l'image";
 
 		$imgAlrdyExists = file_exists(trim(get_post_meta($post->ID, 'upload_image')[0]));
 
@@ -520,10 +524,12 @@ function save_custom(){
 			return;
 		}
 		$newImg = renameEventFile($id, $newImg['path'], $newImg['format']);
+		echo "on a rename l'image reçue";
 		if(!$newImg && !$imgAlrdyExists){
 			$_SESSION["event_up_msg_img"] = "your image couldn't be moved and parsed on server side !";
 			return false;
 		}
+		echo "on va update !";
 		update_post_meta($id, 'event_datefin', $newDateFin);
 		update_post_meta($id, 'event_description', $description);
 		if(!!$newImg)
