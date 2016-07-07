@@ -22,28 +22,35 @@
 /* ##########  POST DE VOTE ########### */
 	else if(isset($_POST['vote_mail'])){
 		$mail = trim($_POST['vote_mail']);
-		if(filter_var($mail,FILTER_VALIDATE_EMAIL)){		
-			$wpdb->insert(
-			    $wpdb->prefix.'vote',
-			    array(
-			        'mail' => $mail,
-			        'image' => 1,
-			        'post' => 1,
-			    ),
-			    array(
-			        '%s',
-			        '%d',
-			        '%d',
-			    )
-			);
-			$em = 0;
+		if(isset($_POST['image_choose'])){
+			$img = $_POST['image_choose'];
+			if(filter_var($mail,FILTER_VALIDATE_EMAIL)){		
+				$wpdb->insert(
+			    	$wpdb->prefix.'vote',
+				    array(
+				        'mail' => $mail,
+				        'image' => $img,
+				        'post' => $idpost,
+				    ),
+				    array(
+				        '%s',
+				        '%d',
+				        '%d',
+				    )
+				);
+				$e = 0;
+			}else{
+				//Si adresse email éronnée 
+				$e = 1;
+			}	
 		}else{
-			//Si adresse email éronnée 
-			$em = 1;
-		}	
+			//Si pas d'image choisie
+			$ei = 2;
+		}
+		
 	}else{
 	//Si pas d'adresse mail renseignée
-		$em = 2;
+		$em = 3;
 	}
 		
 /* ########### PAGE NORMAL ############# */
@@ -58,12 +65,18 @@
 
 	<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>
 	<form action="" method="POST">
-		<input type="email" name="vote_mail">
+		<input type="radio" name="image_choose" value="1">
+		<input type="radio" name="image_choose" value="2">
+		<input type="radio" name="image_choose" value="3">
+		<input type="radio" name="image_choose" value="4">
+		<input type="radio" name="image_choose" value="5">
+		<input type="email" name="vote_mail" placeholder="Votre e-mail">
 		<?php 
-			if(isset($em)){
-					if($em == 0) echo '<span class="success">Vote effectué !</span>';
-					if($em == 1) echo '<span class="error">Adresse email invalide</span>';
-					if($em == 2) echo '<span class="error">Renseignez l\'adresse email</span>';
+			if(isset($e)){
+					if($e == 0) echo '<span class="success">Vote effectué !</span>';
+					if($e == 1) echo '<span class="error">Adresse email invalide</span>';
+					if($e == 2) echo '<span class="error">Veuillez choisir une image</span>';
+					if($e == 3) echo '<span class="error">Renseignez l\'adresse email</span>';
 			}
 		?>
 		<input type="submit">
