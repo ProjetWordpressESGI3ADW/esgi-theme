@@ -1,0 +1,18 @@
+.banniere{
+	text-align: center;
+	background: #ECECEC none repeat scroll 0% 0%;
+	overflow: hidden;
+}
+
+.banniere{
+	width: auto;
+	max-height: 300px;
+}
+
+.description{
+	font-style: italic;
+	margin-top: 10px;
+	margin-left: 50px;
+	margin-right: 50px;
+	background: #ECECEC none repeat scroll 0% 0%;
+}

@@ -12,6 +12,23 @@
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
 ?>
+	<?php
+		$val = get_post_meta($post->ID, 'upload_image');
+		?><br><br><?php
+		print_r($val);
+	?>
+		
+	<div class="banniere">
+		<h1>Titre</h1>
+		<img src="https://sp.yimg.com/ib/th?id=OIP.M2de0ec74f51e3c8d313ffda88464b32eH0&pid=15.1&rs=1&c=1&qlt=95&w=105&h=108#inline">
+	</div>
+	
+	<div class="description">
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+	</div>
 
 	<div class="abolute" id="toi-aussi-upload-ton-img">
 		<h3>Toi aussi up ton dessin miskin</h3>
