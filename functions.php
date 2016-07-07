@@ -506,7 +506,7 @@ function validateEventImg(array $upFile){
 	$name = $upFile['name'];
 	$format = explode('.', $name);
 	$format = $format[count($format)-1];
-	if(!(in_array($format, $authorizedFormats))) return false;
+	if(!(in_array(strtolower($format), $authorizedFormats))) return false;
 
 	return ['path' => $upFile['tmp_name'], 'format' => $format];
 }
