@@ -532,15 +532,20 @@ function renameEventFile($postId, $path, $format){
 	return false;
 }
 function renameContestEventImg($postId, $path, $name, $format){
+	// var_dump($postId);
+	// var_dump($path);
+	// var_dump($name);
+	// var_dump($format);
 	$imgsEventDir = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event';
-	if(!is_dir($imgsEventDir.'/'.$postId)){
-		if(mkdir($imgsEventDir.'/'.$postId)){
-			$finalPath = $imgsEventDir.'/'.$postId.'/'.$name.'.'.$format;
-			touch($finalPath);
-			$r = move_uploaded_file($path, $finalPath);
-			if($r) return $finalPath;
-		}
-	}
+	$finalPath = $imgsEventDir.'/'.$postId.'/'.$name.'.'.$format;
+	// var_dump($imgsEventDir);
+	if(!is_dir($imgsEventDir.'/'.$postId))
+		if(!mkdir($imgsEventDir.'/'.$postId))
+			return false;
+	touch($finalPath);
+	$r = move_uploaded_file($path, $finalPath);
+	if($r) return $finalPath;
+
 	return false;
 
 	
