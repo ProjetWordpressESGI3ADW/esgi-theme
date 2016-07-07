@@ -9,16 +9,19 @@
 
 	$event_handle = 'event_css';
 	$event_stylesheet = get_template_directory_uri() . '/css/event.css';
+	$event_js = get_template_directory_uri() . '/js/event.js';
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
+	wp_enqueue_script( "event_js", $event_js );
 
 	echo '<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>';
 	echo '<form action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST"><input type="email" name="email"><input type="submit"></form>' ;
 ?>
 	<?php
-		$val = get_post_meta($post->ID, 'upload_image');
-		?><br><br><?php
-		print_r($val);
+		$description = get_post_meta($post->ID, 'event_description');
+		$path = explode('/', $description[0]);
+		$path = get_template_directory_uri().'/images/event/'.$path[count($path)-1];
+		echo $path;
 	?>
 		
 	<div class="banniere">
@@ -32,16 +35,17 @@
 		description description description description description description description description description description description description 
 		description description description description description description description description description description description description 
 	</div>
-
+	
 	<div class="fixed" id="toi-aussi-upload-ton-img">
-		<h3>Toi aussi up ton dessin miskin</h3>
+		<div id="popup" class="reduire">Masquer</div>
+		<h3 class="titre_popup">Toi aussi up ton dessin miskin</h3>
 		<div id="img-upload-form-container">
 			<form enctype="multipart/form-data" action="<?php echo get_template_directory_uri()?>/event_post.php" method="post">
 				<label for="event_proposed_drawing">Slit here</label>
 				<input required class="img-responsive" id="event_proposed_drawing" name="event_proposed_drawing" type="file">
 				<label for="event_proposed_email">Donne ton email pour recevoir </label>
 				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.dtc">
-				<input type="submit" value="Envoyer !">
+				<input class="btn" type="submit" value="Envoyer !">
 			</form>
 		</div>
 	</div>
