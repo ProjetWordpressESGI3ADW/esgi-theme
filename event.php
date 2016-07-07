@@ -174,4 +174,4 @@
 		<input class="enterEmail btn btn-primary" type="submit">
 	</form>	
 <?php
-}
+
