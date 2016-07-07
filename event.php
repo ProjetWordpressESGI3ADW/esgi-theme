@@ -1,25 +1,46 @@
 <?php 
 	global $post;
+	$idpost = $post->ID;
+/* ##########  POST D'IMAGE  ###########*/
+	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing'])){
+		if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
+			$newImg = validateEventImg($_FILES['event_proposed_drawing']);
+			if(!!$newImg){
+				global $wpdb;
+				// $query = "SELECT * FROM {$wpdb->prefix}comments" ;
+				$mail = $filteredinputs['event_proposed_email'];
+				// Checker si le mail n'a pas deja up une img
+				$query = "SELECT COUNT(*) as cb FROM {$wpdb->prefix}images WHERE post =".$idpost;
+				$resultats = $wpdb->get_results($query) ;
 
-	var_dump($post);
+				var_dump($resultats);
+		}
+		}
+	}
+/* ##########  POST DE VOTE ########### */
+	else if(false){
 
-	$val = get_post_meta($post->ID, 'upload_image');
+	}
+		
+/* ########### PAGE NORMAL ############# */
+else{
+	$val = get_post_meta($idpost, 'upload_image');
 	$imgPath = explode('/', $val[0]);
 	$imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
-
 	$event_handle = 'event_css';
 	$event_stylesheet = get_template_directory_uri() . '/css/event.css';
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
 
 	echo '<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>';
-	echo '<form action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST"><input type="email" name="email"><input type="submit"></form>' ;
+	echo '<form action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST"><input type="email" name="email"><input type="submit"></form>';
+
 ?>
 
 	<div class="fixed" id="toi-aussi-upload-ton-img">
 		<h3>Toi aussi up ton dessin miskin</h3>
 		<div id="img-upload-form-container">
-			<form enctype="multipart/form-data" action="<?php echo get_template_directory_uri()?>/event_post.php" method="post">
+			<form enctype="multipart/form-data" action="" method="post">
 				<label for="event_proposed_drawing">Slit here</label>
 				<input required class="img-responsive" id="event_proposed_drawing" name="event_proposed_drawing" type="file">
 				<label for="event_proposed_email">Donne ton email pour recevoir </label>
@@ -28,3 +49,5 @@
 			</form>
 		</div>
 	</div>
+<?php
+}
