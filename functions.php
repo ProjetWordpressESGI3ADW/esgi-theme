@@ -884,3 +884,9 @@ function create_vote_table(){
     dbDelta( $sql );
 }
 add_action('after_switch_theme', 'create_vote_table');
+
+require get_template_directory() . '/inc/custom-header.php';
+require get_template_directory() . '/inc/template-tags.php';
+require get_template_directory() . '/inc/extras.php';
+require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/jetpack.php';
