@@ -16,4 +16,5 @@ jQuery(document).ready(function(){
 		jQuery(".titre_popup").css("display", "block");
 		jQuery("#img-upload-form-container").css("display", "block");
 	});
+	
 });
