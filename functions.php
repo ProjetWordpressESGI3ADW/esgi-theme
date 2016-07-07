@@ -23,7 +23,7 @@ function wpdocs_theme_name_scripts() {
     /**
 	*	Bootstrap
 	*/
-	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );	
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
     wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
     /**
      * Custom css
@@ -291,7 +291,21 @@ class OpenEvents {
     }
 
     public function open_events($atts, $content) {
-        echo "TOTO";
+        $events = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10') );
+        foreach ($events->posts as $key => $event) {
+            var_dump($event);
+            $today = new DateTime("NOW");
+            $date = explode("-", get_post_meta($event->ID)["event_datefin"][0]);
+            $end_date = new DateTime();
+            $end_date->setDate(
+                intval($date[0]),
+                intval($date[1]),
+                intval($date[2])
+            );
+            if ($end_date >= $today) {
+                echo $event->post_title;
+            }
+        }
     }
 }
 
@@ -515,7 +529,7 @@ function save_custom(){
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
-		// On enregistre donc les informations d'une contenu de type event 
+		// On enregistre donc les informations d'une contenu de type event
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
 		echo "on a checké la date";
@@ -552,7 +566,7 @@ function save_custom(){
 			update_post_meta($id, 'upload_image', $newImg);
 		return;
 	}
-	
+
 	// fonction pour eviter le vidage des champs personalisés lors de la
 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 		return $post->ID;
@@ -609,7 +623,7 @@ function create_vote_table(){
 
     $table_name = $wpdb->prefix . 'vote';
     $table_name2 = $wpdb->prefix . 'image';
-    
+
 
     $sql = "CREATE TABLE $table_name (
       id int(11) NOT NULL AUTO_INCREMENT,
