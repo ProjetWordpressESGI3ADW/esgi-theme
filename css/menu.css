@@ -1,7 +1,13 @@
 /*
 	MENU VERTICAL
 */
-
+#menu-esgi-y{
+  top: calc(10%);
+  left: 0;
+  width: 100px;
+  height: 90%;
+  max-height: 500px;
+}
 .index-content{
   padding:15px;  
 }

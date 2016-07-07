@@ -60,26 +60,25 @@
 				</nav>
 			<?php endif; ?>
 		</header>
-		<div class="container-fluid main-container">
-			<div class="row">
-				<div class="col-sm-2">
+		<div class="container-fluid main-container">				
 					<!-- Navbar Y -->
-					<?php
-						if(has_nav_menu('y_menu')){
-							wp_nav_menu(array('theme_location'=>'y_menu', "menu_class" => "nav nav-pills nav-stacked"));
-
-							echo '<div class="navbar-side-menu navbar-side-menu-collapse">';
-								echo '<ul class="navbar-menu-ul nav nav-pills nav-stacked">';
-									echo '<li class="navbar-menu-li">';
-										echo '<a href="#" class="active">';
-										echo '</a>';
-									echo '</li>';
-								echo '</ul>';
-							echo '</div>';
-
-							echo '<div class="index-content">';
-								echo '<span class="icon-open"><img src="' . get_template_directory_uri() . '/img/icon/icon-menu.png" id="open-navbar-side-menu"></span></div>';
-						}
-					?>
-				</div>
-				<div class="col-sm-10">
+					<?php if(has_nav_menu('y_menu')): ?>
+						<?php wp_nav_menu(array('theme_location'=>'y_menu', "menu_class" => "nav nav-pills nav-stacked")); ?>
+							<div id="menu-esgi-y" class="fixed">
+								<div class="navbar-side-menu navbar-side-menu-collapse">
+									<ul class="navbar-menu-ul nav nav-pills nav-stacked">
+										<li class="navbar-menu-li">
+											<a href="#" class="active">
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="index-content">
+									<span class="icon-open">
+										<img src="' . get_template_directory_uri() . '/img/icon/icon-menu.png" id="open-navbar-side-menu">
+									</span>
+								</div>
+							</div>
+					<?php endif;?>
+			<div class="row">
+				<div class="col-xs-12">
