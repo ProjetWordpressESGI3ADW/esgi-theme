@@ -292,8 +292,8 @@ class OpenEvents {
 
     public function open_events($atts, $content) {
         $events = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10') );
+        echo "<div class='open-events-container'>";
         foreach ($events->posts as $key => $event) {
-            var_dump($event);
             $today = new DateTime("NOW");
             $date = explode("-", get_post_meta($event->ID)["event_datefin"][0]);
             $end_date = new DateTime();
@@ -303,9 +303,26 @@ class OpenEvents {
                 intval($date[2])
             );
             if ($end_date >= $today) {
-                echo $event->post_title;
+                $event_meta = get_post_meta($event->ID);
+                $val = get_post_meta($event->ID, 'upload_image');
+                $imgPath = explode('/', $val[0]);
+                $imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
+                echo "<div class='event'>
+                        <div class='event-img' style='background-image: url(" . $imgPath . ")'>
+                        </div>
+                        <div class='event-details'>
+                            <h3>" . $event->post_title . "</h3>
+                            <p>" . $event_meta["event_description"][0] . "</p>
+                                <div class='btn-container'>
+                                    <a class='btn btn-xs btn-success' href='" .
+                                    $event->guid .
+                                    "'>Rejoindre</a>
+                                </div>
+                        </div>
+                    </div>";
             }
         }
+        echo "</div>";
     }
 }
 
