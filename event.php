@@ -33,11 +33,8 @@ else{
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
 	wp_enqueue_script( "event_js", $event_js );
-
-	echo '<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>';
-	echo '<form action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST"><input type="email" name="email"><input type="submit"></form>';
-
 ?>
+	
 	<?php
 		$description = get_post_meta($post->ID, 'event_description');
 		$path = explode('/', $description[0]);
@@ -48,6 +45,7 @@ else{
 	<div class="banniere">
 		<h1>Titre</h1>
 		<img src="https://sp.yimg.com/ib/th?id=OIP.M2de0ec74f51e3c8d313ffda88464b32eH0&pid=15.1&rs=1&c=1&qlt=95&w=105&h=108#inline">
+		<div>01/01/2001</div>
 	</div>
 	
 	<div class="description">
@@ -65,10 +63,16 @@ else{
 				<label for="event_proposed_drawing">Slit here</label>
 				<input required class="img-responsive" id="event_proposed_drawing" name="event_proposed_drawing" type="file">
 				<label for="event_proposed_email">Donne ton email pour recevoir </label>
-				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.dtc">
-				<input class="btn" type="submit" value="Envoyer !">
+				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.com">
+				<input class="btn btn-primary" type="submit" value="Envoyer !">
 			</form>
 		</div>
 	</div>
+	
+	<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>
+	<form class="formVoteDessin" action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST">
+		Email : <input placeholder="email@domaine.com" type="email" name="email">
+		<input class="enterEmail btn btn-primary" type="submit">
+	</form>	
 <?php
 }

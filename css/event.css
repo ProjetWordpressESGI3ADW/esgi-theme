@@ -7,6 +7,7 @@
 .banniere{
 	width: auto;
 	max-height: 300px;
+	border-radius: 10px;
 }
 
 .description{
@@ -15,6 +16,7 @@
 	margin-left: 50px;
 	margin-right: 50px;
 	background: #ECECEC none repeat scroll 0% 0%;
+	border-radius: 10px;
 }
 
 .fixed{
@@ -35,4 +37,12 @@
 
 #popup:hover{
 	text-decoration: underline;
+}
+
+.enterEmail{
+	margin-left: 10px;
+}
+
+.formVoteDessin{
+	text-align: center;
 }
