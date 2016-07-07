@@ -580,3 +580,30 @@ add_action('admin_print_scripts', 'my_admin_scripts');
 add_action('admin_print_styles', 'my_admin_styles');
 
 
+//Creation de la table vote lors d'un changement de thème (si elle n'existe pas)
+
+function create_vote_table(){
+
+	global $wpdb;
+
+    $table_name = $wpdb->prefix . 'vote';
+    $table_name2 = $wpdb->prefix . 'image';
+    
+
+    $sql = "CREATE TABLE $table_name (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      mail varchar(80) NOT NULL,
+      image int(11) NOT NULL,
+      post int(11) NOT NULL,
+      UNIQUE KEY id (id)
+    );CREATE TABLE $table_name2 (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      post int(11) NOT NULL,
+      src varchar(80) NOT NULL,
+      UNIQUE KEY id (id)
+    );";
+
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
+}
+add_action('after_switch_theme', 'create_vote_table');
