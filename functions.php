@@ -606,6 +606,7 @@ function create_vote_table(){
       id int(11) NOT NULL AUTO_INCREMENT,
       post int(11) NOT NULL,
       src varchar(80) NOT NULL,
+      'email' varchar(80) NOT NULL,
       UNIQUE KEY id (id)
     );";
 
