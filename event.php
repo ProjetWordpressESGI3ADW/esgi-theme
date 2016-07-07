@@ -21,8 +21,8 @@
 	}
 /* ##########  POST DE VOTE ########### */
 	else if(isset($_POST['vote_mail'])){
-		$mail = trim($_POST['email']);
-		if(!filter_var($mail,FILTER_VALIDATE_EMAIL)){		
+		$mail = trim($_POST['vote_mail']);
+		if(filter_var($mail,FILTER_VALIDATE_EMAIL)){		
 			$wpdb->insert(
 			    $wpdb->prefix.'vote',
 			    array(
