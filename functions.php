@@ -23,7 +23,7 @@ function wpdocs_theme_name_scripts() {
     /**
 	*	Bootstrap
 	*/
-	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );	
     wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
     /**
      * Custom css
@@ -506,7 +506,13 @@ function validateEventDate($string){
 		return $string;
 	return false;
 }
-
+function validateEventImgName($string){
+	$string = trim($string);
+	$authorizedChars= "a-z0-9";
+	if(preg_match("/[^".$authorizedChars."]/i", $string))	
+		return false;
+	return $string;
+}
 function validateEventDescription($string){
 	$string = trim($string);
 	$authorizedChars= "a-z0-9 ,\.=\!éàôûîêçùèâ@\(\)\?";
@@ -519,22 +525,35 @@ function validateEventDescription($string){
 function renameEventFile($postId, $path, $format){
 	$finalPath = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event/'.$postId.'.'.$format;
 	// var_dump($finalPath);
-	echo "<script>alert('".$finalPath."');</script>";
 	touch($finalPath);
 	$r = move_uploaded_file($path, $finalPath);
 	if($r) return $finalPath;
 	return false;
 }
+function renameContestEventImg($postId, $path, $name, $format){
+	$imgsEventDir = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event';
+	if(!is_dir($imgsEventDir.'/'.$postId)){
+		if(mkdir($imgsEventDir.'/'.$postId)){
+			$finalPath = $imgsEventDir.'/'.$postId.'/'.$name.'.'.$format;
+			touch($finalPath);
+			$r = move_uploaded_file($path, $finalPath);
+			if($r) return $finalPath;
+		}
+	}
+	return false;
+
+	
+}
 function validateEventImg(array $upFile){
 	if($upFile['size'] > 2000000) return false;
-	if($upFile['error'] > 0) return false;
+	if($upFile['error'] > 0) return false; 
 	$type = $upFile['type'];
 	if(is_bool(strpos($type, 'image'))) return false;
 	$authorizedFormats = ['png', 'jpg', 'jpeg', 'gif'];
 	$name = $upFile['name'];
 	$format = explode('.', $name);
 	$format = $format[count($format)-1];
-	if(!(in_array($format, $authorizedFormats))) return false;
+	if(!(in_array(strtolower($format), $authorizedFormats))) return false;
 
 	return ['path' => $upFile['tmp_name'], 'format' => $format];
 }
@@ -546,7 +565,7 @@ function save_custom(){
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
-		// On enregistre donc les informations d'une contenu de type event
+		// On enregistre donc les informations d'une contenu de type event 
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
 		echo "on a checké la date";
@@ -583,7 +602,7 @@ function save_custom(){
 			update_post_meta($id, 'upload_image', $newImg);
 		return;
 	}
-
+	
 	// fonction pour eviter le vidage des champs personalisés lors de la
 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 		return $post->ID;
@@ -595,8 +614,8 @@ add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
 add_action("admin_init", "init_fields");
 
 function register_my_setting() {
-	register_setting( 'my_options_group', 'my_option_name', 'intval' );
-}
+	register_setting( 'my_options_group', 'my_option_name', 'intval' ); 
+} 
 add_action( 'admin_init', 'register_my_setting' );
 
 
@@ -640,7 +659,7 @@ function create_vote_table(){
 
     $table_name = $wpdb->prefix . 'vote';
     $table_name2 = $wpdb->prefix . 'image';
-
+    
 
     $sql = "CREATE TABLE $table_name (
       id int(11) NOT NULL AUTO_INCREMENT,
@@ -652,7 +671,8 @@ function create_vote_table(){
       id int(11) NOT NULL AUTO_INCREMENT,
       post int(11) NOT NULL,
       src varchar(80) NOT NULL,
-      'email' varchar(80) NOT NULL,
+      name varchar(50) NOT NULL,
+      email varchar(100) NOT NULL,
       UNIQUE KEY id (id)
     );";
 
