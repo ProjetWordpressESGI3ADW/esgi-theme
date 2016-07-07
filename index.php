@@ -4,7 +4,7 @@
 
 		// var_dump(get_post());
 		// vérifie si l'on est dans la page homepage ou events
-		if(is_home() || is_numeric(strpos(get_post()->post_type, "even"))){
+		if(is_home() || is_numeric(strpos(get_post()->post_type, "event"))){
 			// echo "enculer";
 			if(have_posts()){
 				// the_content();
@@ -18,7 +18,7 @@
 					$imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
 
 
-					echo 
+					echo
 					"<div>
 						<h1><a href='".get_page_uri($post->ID)."''>". $post->post_title . "</a></h1>
 						<p>" . get_post_meta($post->ID, 'event_description')[0] . "</p>
@@ -28,9 +28,9 @@
 							<img src='".$imgPath."' alt=''>
 						</div>
 
-					</div>";			
+					</div>";
 				}
-				wp_reset_query();	
+				wp_reset_query();
 			}else{
 				echo("contenu introuvable");
 			}

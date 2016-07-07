@@ -1,3 +1,25 @@
+.banniere{
+	text-align: center;
+	background: #ECECEC none repeat scroll 0% 0%;
+	overflow: hidden;
+}
+
+.banniere{
+	width: auto;
+	max-height: 300px;
+	border-radius: 10px;
+}
+
+.description{
+	font-style: italic;
+	margin-top: 10px;
+	margin-left: 50px;
+	margin-right: 50px;
+	background: #ECECEC none repeat scroll 0% 0%;
+	border-radius: 10px;
+	
+}
+
 .fixed{
 	position: fixed;
 }
@@ -5,4 +27,23 @@
 #toi-aussi-upload-ton-img{
 	top: calc(50%);
 	right: 0;
+	background: #DEDEDE none repeat scroll 0% 0%;
+	border-radius: 10px;
+    padding: 20px;
+}
+
+#popup{
+	cursor: pointer;
+}
+
+#popup:hover{
+	text-decoration: underline;
+}
+
+.enterEmail{
+	margin-left: 10px;
+}
+
+.formVoteDessin{
+	text-align: center;
 }

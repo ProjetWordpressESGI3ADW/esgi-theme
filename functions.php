@@ -281,6 +281,53 @@ function head_style(){
 }
 add_action('wp_head', 'head_style');
 
+/**
+ * Shortcode évennements ouverts
+ */
+
+class OpenEvents {
+    public function __construct() {
+        add_shortcode("list_open_events", array($this, "open_events"));
+    }
+
+    public function open_events($atts, $content) {
+        $events = new WP_Query( array( 'post_type' => 'event', 'posts_per_page' => '10') );
+        echo "<div class='open-events-container'>";
+        foreach ($events->posts as $key => $event) {
+            $today = new DateTime("NOW");
+            $date = explode("-", get_post_meta($event->ID)["event_datefin"][0]);
+            $end_date = new DateTime();
+            $end_date->setDate(
+                intval($date[0]),
+                intval($date[1]),
+                intval($date[2])
+            );
+            if ($end_date >= $today) {
+                $event_meta = get_post_meta($event->ID);
+                $val = get_post_meta($event->ID, 'upload_image');
+                $imgPath = explode('/', $val[0]);
+                $imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
+                echo "<div class='event'>
+                        <div class='event-img' style='background-image: url(" . $imgPath . ")'>
+                        </div>
+                        <div class='event-details'>
+                            <h3>" . $event->post_title . "</h3>
+                            <p>" . $event_meta["event_description"][0] . "</p>
+                                <div class='btn-container'>
+                                    <a class='btn btn-xs btn-success' href='" .
+                                    $event->guid .
+                                    "'>Rejoindre</a>
+                                </div>
+                        </div>
+                    </div>";
+            }
+        }
+        echo "</div>";
+    }
+}
+
+new OpenEvents();
+
 
 
 /*Création de mon propre type */
@@ -381,7 +428,7 @@ function event_description_callback(){
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
 				<input type="text" name="event_description" size="30" value="'.$val[0].'" id="description" spellcheck="true" autocomplete="off">
-				
+
 			</div>
 		  </div>';
 	}
@@ -390,7 +437,7 @@ function event_description_callback(){
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
 				<input type="text" name="event_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
-				
+
 			</div>
 		  </div>';
 		 }
@@ -413,7 +460,7 @@ function event_datefin_callback(){
 	if(isset($_SESSION['event_up_msg_date'])) unset($_SESSION['event_up_msg_date']);
 }
 
-function event_addImage_callback(){	
+function event_addImage_callback(){
 	global $post;
 	// var_dump($post);
 	if(isset($_SESSION['event_up_msg_img']))
@@ -507,7 +554,7 @@ function validateEventImg(array $upFile){
 	$name = $upFile['name'];
 	$format = explode('.', $name);
 	$format = $format[count($format)-1];
-	if(!(in_array($format, $authorizedFormats))) return false;
+	if(!(in_array(strtolower($format), $authorizedFormats))) return false;
 
 	return ['path' => $upFile['tmp_name'], 'format' => $format];
 }
@@ -586,7 +633,6 @@ add_action('admin_print_styles', 'admin_css', 11 );
 function admin_js() {
 	$admin_handle = 'admin_js';
 	$admin_js = get_template_directory_uri() . '/js/admin.js';
-	var_dump("fdp");
 
 	wp_enqueue_script( $admin_handle, $admin_js );
 }
@@ -635,13 +681,3 @@ function create_vote_table(){
     dbDelta( $sql );
 }
 add_action('after_switch_theme', 'create_vote_table');
-
-
-
-/* ######## TENTATIVE DE REPARATION DE LA SESSION DEFONCEE PAR WORDPRESS A CHAQUE RELOAD ######## */
-add_action('init', 'myStartSession', 1);
-function myStartSession() {
-    if(!session_id()) {
-        session_start();
-    }
-}

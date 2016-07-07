@@ -22,7 +22,7 @@
 				// var_dump($resultats);
 				// var_dump((int)$resultats[0]->nb);
 				// // var_dump();
-				if((int) $resultats[0]->nb == 0){
+				if((int) $resultats[0]->nb == 0 || is_null($resultats[0])){
 					echo "tu peux enregistrer ton image maggle";
 
 					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
@@ -69,6 +69,8 @@
 				echo "<br>";
 				echo "email must be formated as: your_email@email.com";
 			}
+		}else{
+			echo 'wtf3';
 		}
 
 		unset($_POST['event_proposed_email'], $_POST['event_proposed_img_name'], $_FILES['event_proposed_drawing']);flush();
@@ -113,9 +115,31 @@
 	$imgPath = get_template_directory_uri().'/images/event/'.$imgPath[count($imgPath)-1];
 	$event_handle = 'event_css';
 	$event_stylesheet = get_template_directory_uri() . '/css/event.css';
+	$event_js = get_template_directory_uri() . '/js/event.js';
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
+	wp_enqueue_script( "event_js", $event_js );
 ?>
+	
+	<?php
+		$description = get_post_meta($post->ID, 'event_description');
+		$path = explode('/', $description[0]);
+		$path = get_template_directory_uri().'/images/event/'.$path[count($path)-1];
+		echo $path;
+	?>
+		
+	<div class="banniere">
+		<h1>Titre</h1>
+		<img src="https://sp.yimg.com/ib/th?id=OIP.M2de0ec74f51e3c8d313ffda88464b32eH0&pid=15.1&rs=1&c=1&qlt=95&w=105&h=108#inline">
+		<div>01/01/2001</div>
+	</div>
+	
+	<div class="description">
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+		description description description description description description description description description description description description 
+	</div>
 
 	<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>
 	<form action="" method="POST">
@@ -136,7 +160,8 @@
 		<input type="submit">
 	</form>
 	<div class="fixed" id="toi-aussi-upload-ton-img">
-		<h3>Toi aussi up ton dessin miskin</h3>
+		<div id="popup" class="reduire">Masquer</div>
+		<h3 class="titre_popup">Toi aussi up ton dessin miskin</h3>
 		<div id="img-upload-form-container">
 			<form enctype="multipart/form-data" action="" method="post">
 				<label for="event_proposed_drawing">Slit here</label>
@@ -144,8 +169,16 @@
 				<label for="event_proposed_img_name">Donnez un nom à votre image !</label>
 				<input type="text" name="event_proposed_img_name">
 				<label for="event_proposed_email">Donne ton email pour recevoir </label>
-				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.dtc">
-				<input type="submit" value="Envoyer !">
+				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.com">
+				<input class="btn btn-primary" type="submit" value="Envoyer !">
 			</form>
 		</div>
 	</div>
+	
+	<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>
+	<form class="formVoteDessin" action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST">
+		Email : <input placeholder="email@domaine.com" type="email" name="email">
+		<input class="enterEmail btn btn-primary" type="submit">
+	</form>	
+<?php
+
