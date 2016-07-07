@@ -461,6 +461,7 @@ function validateEventDate($string){
 }
 function validateEventImgName($string){
 	$string = trim($string);
+	if(strlen($string) > 49) return false;
 	$authorizedChars= "a-z0-9";
 	if(preg_match("/[^".$authorizedChars."]/i", $string))	
 		return false;
@@ -624,7 +625,7 @@ function create_vote_table(){
     );CREATE TABLE $table_name2 (
       id int(11) NOT NULL AUTO_INCREMENT,
       post int(11) NOT NULL,
-      src varchar(80) NOT NULL,
+      src varchar(255) NOT NULL,
       name varchar(50) NOT NULL,
       email varchar(100) NOT NULL,
       UNIQUE KEY id (id)

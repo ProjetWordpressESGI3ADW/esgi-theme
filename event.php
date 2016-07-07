@@ -3,20 +3,23 @@
 	global $wpdb;
 
 	$idpost = $post->ID;
-	var_dump($idpost);
+	// var_dump($idpost);
 /* ##########  POST D'IMAGE  ###########*/
 	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){
+		// var_dump($_POST['event_proposed_email']);
+		// var_dump($_POST['event_proposed_img_name']);
+		// var_dump($_FILES['event_proposed_drawing']);
 		if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
 			$newImg = validateEventImg($_FILES['event_proposed_drawing']);
 			$name = validateEventImgName($_POST['event_proposed_img_name']);
 			if(!!$newImg && !!$name){
 				global $wpdb;
 				// $query = "SELECT * FROM {$wpdb->prefix}comments" ;
-				$mail = $filteredinputs['event_proposed_email'];
+				$mail = $_POST['event_proposed_email'];
 				// Checker si le mail n'a pas deja up une img
 				$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE email='".$mail."' AND post=".$idpost." LIMIT 0,1";
 				$resultats = $wpdb->get_results($query);
-				// var_dump($resultats[0]->nb);
+				// var_dump($resultats);
 				// var_dump((int)$resultats[0]->nb);
 				// // var_dump();
 				if((int) $resultats[0]->nb == 0){
@@ -26,14 +29,19 @@
 					$resultats = $wpdb->get_results($query);
 					if((int) $resultats[0]->nb == 0){
 						$finalPath = renameContestEventImg($idpost, $newImg['path'], $name, $newImg['format']);
-						
-						$resultats = $wpdb->insert(
-					    	$wpdb->prefix.'vote',
+						// var_dump($wpdb->prefix.'image');
+
+						// var_dump($idpost);
+						// var_dump($finalPath);
+						// var_dump($name);
+						// var_dump($mail);
+						$r = $wpdb->insert(
+					    	$wpdb->prefix.'image',
 						    array(
 						        'post' => $idpost,
 						        'src' => $finalPath,
 						        'name' => $name,
-						        'email' => $mail,
+						        'email' => $mail
 						    ),
 						    array(
 						        '%d',
@@ -42,31 +50,28 @@
 						        '%s'
 						    )
 						);
-						var_dump($resultats);
+						// var_dump($r);
+						if($r){
+							echo "GG T'AS UP TON DESSIN FRERO";
+						}
+						else{
+							echo "L'UP A FAIL !";
+						}
 					}
 					else
-						echo "CE NOM D'IMAGE EST DEJA UTILISE";
-				/*
-
-				$wpdb->insert(
-			    	$wpdb->prefix.'vote',
-				    array(
-				        'post' => $idpost,
-				        'src' => $finalPath,
-				        'name' => $name,
-				        'email' => $mail,
-				    ),
-				    array(
-				        '%d',
-				        '%s',
-				        '%s',
-				        '%s'
-				    )
-				);
-				*/	
+						echo "Ce nom d'image est déjà utilisé pour cet event !";
 				}
+				else
+					echo "Une image a déjà été postée avec cet email !";
+			}
+			else{
+				echo "image's name must me 49 characters long and be composed only of aplhanumerical characters !";
+				echo "<br>";
+				echo "email must be formated as: your_email@email.com";
 			}
 		}
+
+		unset($_POST['event_proposed_email'], $_POST['event_proposed_img_name'], $_FILES['event_proposed_drawing']);flush();
 	}
 /* ##########  POST DE VOTE ########### */
 	else if(isset($_POST['vote_mail'])){
