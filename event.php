@@ -105,22 +105,22 @@
 					        '%d',
 					    )
 					);
-					$e = 0;
+					$msg = "Vote success !";
 				}else{
 					//Si adresse email éronnée 
-					$e = 1;
+					$msg = "Wrong email address";
 				}	
 			}else{
 			//Si pas d'image choisie
-			$ei = 2;
+			$msg = "No image choose";
 		}
 		}else{
 			//Si deja voté
-			$e = 4;
+			$msg = "Already vote";
 		}
 	}else{
 	//Si pas d'adresse mail renseignée
-		$em = 3;
+		$msg = "Please writ your email address";
 	}
 		
 /* ########### PAGE NORMAL ############# */
@@ -156,21 +156,26 @@
 	<div>
 		<h3>Vote for your favorite drawing !</h3>
 		<form action="" method="POST">
-			<input type="radio" name="image_choose" value="1">
-			<input type="radio" name="image_choose" value="2">
-			<input type="radio" name="image_choose" value="3">
-			<input type="radio" name="image_choose" value="4">
-			<input type="radio" name="image_choose" value="5">
+			<div class="col-md-12" id="images">
+				<?php
+					$query = "SELECT * FROM {$wpdb->prefix}image WHERE post=".$idpost;
+					$resultats = $wpdb->get_results($query);
+					
+					foreach ($resultats as $key => $line) {
+						$img = explode("/", $line->src);
+						$img = $img[count($img) - 1];
+						echo '<div class="item">'
+						.'<img width="300" height="300" src="'.get_template_directory_uri().'/images/event/'.$idpost.'/'.$img.'">'
+						.'<div class="radio">'
+						.'<input type="radio" name="image_choose" value="'.$line->id.'">'
+						.'</div>'
+						.'</div>';
+					}
+
+				?>
+			</div>
 			<input type="email" name="vote_mail" placeholder="Votre e-mail">
-			<?php 
-				if(isset($e)){
-						if($e == 0) echo '<span class="success">Vote effectué !</span>';
-						if($e == 1) echo '<span class="error">Adresse email invalide</span>';
-						if($e == 2) echo '<span class="error">Veuillez choisir une image</span>';
-						if($e == 3) echo '<span class="error">Renseignez l\'adresse email</span>';
-				}
-			?>
-			<input type="submit">
+			<input type="submit" value="Votez !">
 		</form>
 	</div>
 	<div class="fixed display-flex-column" id="toi-aussi-upload-ton-img">
