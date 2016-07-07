@@ -69,8 +69,14 @@
 	border-radius: 10px;
 	
 }
+#event_datefin{
+	margin: auto;
+	width: 100%;
+}
 #event_datefin p{
-	text-align: left;
+	padding-right: 20px;
+	font-style: italic;
+	text-align: right;
 }
 #event_banner_img{
 	max-height: 200px;
