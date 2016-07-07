@@ -459,7 +459,13 @@ function validateEventDate($string){
 		return $string;
 	return false;
 }
-
+function validateEventImgName($string){
+	$string = trim($string);
+	$authorizedChars= "a-z0-9";
+	if(preg_match("/[^".$authorizedChars."]/i", $string))	
+		return false;
+	return $string;
+}
 function validateEventDescription($string){
 	$string = trim($string);
 	$authorizedChars= "a-z0-9 ,\.=\!éàôûîêçùèâ@\(\)\?";
@@ -472,11 +478,24 @@ function validateEventDescription($string){
 function renameEventFile($postId, $path, $format){
 	$finalPath = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event/'.$postId.'.'.$format;
 	// var_dump($finalPath);
-	echo "<script>alert('".$finalPath."');</script>";
 	touch($finalPath);
 	$r = move_uploaded_file($path, $finalPath);
 	if($r) return $finalPath;
 	return false;
+}
+function renameContestEventImg($postId, $path, $name, $format){
+	$imgsEventDir = str_replace("\\", '/', plugin_dir_path( __FILE__ )) . 'images/event';
+	if(!is_dir($imgsEventDir.'/'.$postId)){
+		if(mkdir($imgsEventDir.'/'.$postId)){
+			$finalPath = $imgsEventDir.'/'.$postId.'/'.$name.'.'.$format;
+			touch($finalPath);
+			$r = move_uploaded_file($path, $finalPath);
+			if($r) return $finalPath;
+		}
+	}
+	return false;
+
+	
 }
 function validateEventImg(array $upFile){
 	if($upFile['size'] > 2000000) return false;
@@ -606,7 +625,8 @@ function create_vote_table(){
       id int(11) NOT NULL AUTO_INCREMENT,
       post int(11) NOT NULL,
       src varchar(80) NOT NULL,
-      'email' varchar(80) NOT NULL,
+      name varchar(50) NOT NULL,
+      email varchar(100) NOT NULL,
       UNIQUE KEY id (id)
     );";
 

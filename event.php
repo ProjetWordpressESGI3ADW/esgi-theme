@@ -1,20 +1,69 @@
 <?php 
 	global $post;
 	$idpost = $post->ID;
+	var_dump($idpost);
 /* ##########  POST D'IMAGE  ###########*/
-	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing'])){
+	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){
 		if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
 			$newImg = validateEventImg($_FILES['event_proposed_drawing']);
-			if(!!$newImg){
+			$name = validateEventImgName($_POST['event_proposed_img_name']);
+			if(!!$newImg && !!$name){
 				global $wpdb;
 				// $query = "SELECT * FROM {$wpdb->prefix}comments" ;
 				$mail = $filteredinputs['event_proposed_email'];
 				// Checker si le mail n'a pas deja up une img
-				$query = "SELECT COUNT(*) as cb FROM {$wpdb->prefix}images WHERE post =".$idpost;
-				$resultats = $wpdb->get_results($query) ;
+				$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE email='".$mail."' AND post=".$idpost." LIMIT 0,1";
+				$resultats = $wpdb->get_results($query);
+				// var_dump($resultats[0]->nb);
+				// var_dump((int)$resultats[0]->nb);
+				// // var_dump();
+				if((int) $resultats[0]->nb == 0){
+					echo "tu peux enregistrer ton image maggle";
 
-				var_dump($resultats);
-		}
+					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
+					$resultats = $wpdb->get_results($query);
+					if((int) $resultats[0]->nb == 0){
+						$finalPath = renameContestEventImg($idpost, $newImg['path'], $name, $newImg['format']);
+						
+						$resultats = $wpdb->insert(
+					    	$wpdb->prefix.'vote',
+						    array(
+						        'post' => $idpost,
+						        'src' => $finalPath,
+						        'name' => $name,
+						        'email' => $mail,
+						    ),
+						    array(
+						        '%d',
+						        '%s',
+						        '%s',
+						        '%s'
+						    )
+						);
+						var_dump($resultats);
+					}
+					else
+						echo "CE NOM D'IMAGE EST DEJA UTILISE";
+				/*
+
+				$wpdb->insert(
+			    	$wpdb->prefix.'vote',
+				    array(
+				        'post' => $idpost,
+				        'src' => $finalPath,
+				        'name' => $name,
+				        'email' => $mail,
+				    ),
+				    array(
+				        '%d',
+				        '%s',
+				        '%s',
+				        '%s'
+				    )
+				);
+				*/	
+				}
+			}
 		}
 	}
 /* ##########  POST DE VOTE ########### */
@@ -43,6 +92,8 @@ else{
 			<form enctype="multipart/form-data" action="" method="post">
 				<label for="event_proposed_drawing">Slit here</label>
 				<input required class="img-responsive" id="event_proposed_drawing" name="event_proposed_drawing" type="file">
+				<label for="event_proposed_img_name">Donnez un nom à votre image !</label>
+				<input type="text" name="event_proposed_img_name">
 				<label for="event_proposed_email">Donne ton email pour recevoir </label>
 				<input required type="email" id="event_proposed_email" name="event_proposed_email" placeholder="email@domain.dtc">
 				<input type="submit" value="Envoyer !">
