@@ -41,11 +41,4 @@
 		else{
 			echo("post introuvable");
 		}
-
-		// if(is_active_sidebar('sidebar-1')){
-		// 	dynamic_sidebar('sidebar-1');
-		// }
-
-		get_footer();
-	?>
-	</div>
+?>
