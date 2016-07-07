@@ -23,39 +23,37 @@
 				// var_dump((int)$resultats[0]->nb);
 				// // var_dump();
 				if((int) $resultats[0]->nb == 0 || is_null($resultats[0])){
-					echo "tu peux enregistrer ton image maggle";
-
 					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
 					$resultats = $wpdb->get_results($query);
 					if((int) $resultats[0]->nb == 0){
 						$finalPath = renameContestEventImg($idpost, $newImg['path'], $name, $newImg['format']);
-						// var_dump($wpdb->prefix.'image');
-
-						// var_dump($idpost);
 						// var_dump($finalPath);
-						// var_dump($name);
-						// var_dump($mail);
-						$r = $wpdb->insert(
-					    	$wpdb->prefix.'image',
-						    array(
-						        'post' => $idpost,
-						        'src' => $finalPath,
-						        'name' => $name,
-						        'email' => $mail
-						    ),
-						    array(
-						        '%d',
-						        '%s',
-						        '%s',
-						        '%s'
-						    )
-						);
-						// var_dump($r);
-						if($r){
-							$msg= "Your drawing was succeffully uploaded !";
+						if(!!$finalPath){
+							$r = $wpdb->insert(
+						    	$wpdb->prefix.'image',
+							    array(
+							        'post' => $idpost,
+							        'src' => $finalPath,
+							        'name' => $name,
+							        'email' => $mail
+							    ),
+							    array(
+							        '%d',
+							        '%s',
+							        '%s',
+							        '%s'
+							    )
+							);
+							// var_dump($r);
+							if($r){
+								$msg= "Your drawing was succeffully uploaded !";
+							}
+							else{
+								$msg= "Not able to save your drawing, we are really sorry";
+							}
 						}
 						else{
-							$msg= "Not able to save your drawing, we are really sorry";
+							$msg = "Your image couldn't be moved !";
 						}
 					}
 					else
@@ -119,12 +117,10 @@
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
 	wp_enqueue_script( "event_js", $event_js );
-?>
-	
-	<?php
-		$description = get_post_meta($post->ID, 'event_description');
-		$path = explode('/', $description[0]);
-		$path = get_template_directory_uri().'/images/event/'.$path[count($path)-1];
+
+	$description = get_post_meta($post->ID, 'event_description');
+	$path = explode('/', $description[0]);
+	$path = get_template_directory_uri().'/images/event/'.$path[count($path)-1];
 	?>
 		<?php if (isset($msg)): ?>
 			<div id="event_up_msg" class="animation fadeDown fixed display-flex-column"><p><a href=""><?php echo $msg; ?></a></p></div>
@@ -132,7 +128,7 @@
 	<div class="banniere display-flex-column">
 		<h1><?php echo $post->post_title; ?></h1>
 		<img id="event_banner_img" src="<?php echo $imgPath; ?>">
-		<div class="display-flex-column" id="event_datefin">
+		<div id="event_datefin">
 			<p>Ending date: <?php echo get_post_meta($post->ID, 'event_datefin')[0]; ?></p>
 		</div>
 	</div>
@@ -183,5 +179,5 @@
 		Email : <input placeholder="email@domaine.com" type="email" name="email">
 		<input class="enterEmail btn btn-primary" type="submit">
 	</form>	
-<?php
+
 
