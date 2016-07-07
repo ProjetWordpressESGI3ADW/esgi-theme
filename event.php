@@ -52,17 +52,17 @@
 						);
 						// var_dump($r);
 						if($r){
-							$msg= "GG T'AS UP TON DESSIN FRERO";
+							$msg= "Your drawing was succeffully uploaded !";
 						}
 						else{
-							$msg= "L'UP A FAIL !";
+							$msg= "Not able to save your drawing, we are really sorry";
 						}
 					}
 					else
-						$msg= "Ce nom d'image est déjà utilisé pour cet event !";
+						$msg= "This image name is already being used for this event !";
 				}
 				else
-					$msg= "Une image a déjà été postée avec cet email !";
+					$msg= "An image was already posted with this email account";
 			}
 			else{
 				$msg= "image's name must me 49 characters long and be composed only of aplhanumerical characters !";
@@ -70,7 +70,7 @@
 				$msg= "email must be formated as: your_email@email.com";
 			}
 		}else{
-			$msg= 'wtf3';
+			$msg= 'Email was quite not an email !';
 		}
 
 		unset($_POST['event_proposed_email'], $_POST['event_proposed_img_name'], $_FILES['event_proposed_drawing']);flush();
