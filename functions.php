@@ -23,7 +23,7 @@ function wpdocs_theme_name_scripts() {
     /**
 	*	Bootstrap
 	*/
-	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );	
+	wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
     wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.js' );
     /**
      * Custom css
@@ -281,6 +281,22 @@ function head_style(){
 }
 add_action('wp_head', 'head_style');
 
+/**
+ * Shortcode évennements ouverts
+ */
+
+class OpenEvents {
+    public function __construct() {
+        add_shortcode("list_open_events", array($this, "open_events"));
+    }
+
+    public function open_events($atts, $content) {
+        echo "TOTO";
+    }
+}
+
+new OpenEvents();
+
 
 
 /*Création de mon propre type */
@@ -381,7 +397,7 @@ function event_description_callback(){
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
 				<input type="text" name="event_description" size="30" value="'.$val[0].'" id="description" spellcheck="true" autocomplete="off">
-				
+
 			</div>
 		  </div>';
 	}
@@ -390,7 +406,7 @@ function event_description_callback(){
 			<div id="description-wrap">
 				<label class="" id="desription-prompt-text" for="title">Saisissez votre desription</label>
 				<input type="text" name="event_description" size="30" value="" id="description" spellcheck="true" autocomplete="off">
-				
+
 			</div>
 		  </div>';
 		 }
@@ -413,7 +429,7 @@ function event_datefin_callback(){
 	if(isset($_SESSION['event_up_msg_date'])) unset($_SESSION['event_up_msg_date']);
 }
 
-function event_addImage_callback(){	
+function event_addImage_callback(){
 	global $post;
 	// var_dump($post);
 	if(isset($_SESSION['event_up_msg_img']))
@@ -480,7 +496,7 @@ function renameEventFile($postId, $path, $format){
 }
 function validateEventImg(array $upFile){
 	if($upFile['size'] > 2000000) return false;
-	if($upFile['error'] > 0) return false; 
+	if($upFile['error'] > 0) return false;
 	$type = $upFile['type'];
 	if(is_bool(strpos($type, 'image'))) return false;
 	$authorizedFormats = ['png', 'jpg', 'jpeg', 'gif'];
@@ -498,7 +514,7 @@ function save_custom(){
 	// var_dump($_FILES);
 	// exit;
 	if($post->post_type == 'event'){
-		// On enregistre donc les informations d'une contenu de type event 
+		// On enregistre donc les informations d'une contenu de type event
 		$id = $post->ID;
 		$newDateFin = validateEventDate($_POST['event_datefin']);
 		if(!$newDateFin){
@@ -530,7 +546,7 @@ function save_custom(){
 			update_post_meta($id, 'upload_image', $newImg);
 		return;
 	}
-	
+
 	// fonction pour eviter le vidage des champs personalisés lors de la
 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 		return $post->ID;
@@ -542,8 +558,8 @@ add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
 add_action("admin_init", "init_fields");
 
 function register_my_setting() {
-	register_setting( 'my_options_group', 'my_option_name', 'intval' ); 
-} 
+	register_setting( 'my_options_group', 'my_option_name', 'intval' );
+}
 add_action( 'admin_init', 'register_my_setting' );
 
 
@@ -560,7 +576,6 @@ add_action('admin_print_styles', 'admin_css', 11 );
 function admin_js() {
 	$admin_handle = 'admin_js';
 	$admin_js = get_template_directory_uri() . '/js/admin.js';
-	var_dump("fdp");
 
 	wp_enqueue_script( $admin_handle, $admin_js );
 }
@@ -578,5 +593,3 @@ function my_admin_styles() {
 }
 add_action('admin_print_scripts', 'my_admin_scripts');
 add_action('admin_print_styles', 'my_admin_styles');
-
-
