@@ -1,0 +1,8 @@
+.fixed{
+	position: fixed;
+}
+
+#toi-aussi-upload-ton-img{
+	top: calc(50%);
+	right: 0;
+}
