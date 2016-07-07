@@ -11,6 +11,9 @@
 	$event_stylesheet = get_template_directory_uri() . '/css/event.css';
 
 	wp_enqueue_style( $event_handle, $event_stylesheet );
+
+	echo '<h3>Coche une des images, inscris ton adresse email et vote pour ton dessin préféré!</h3>';
+	echo '<form action="<?php echo get_template_directory_uri()?>/eventvote_post.php" method="POST"><input type="email" name="email"><input type="submit"></form>' ;
 ?>
 
 	<div class="fixed" id="toi-aussi-upload-ton-img">
