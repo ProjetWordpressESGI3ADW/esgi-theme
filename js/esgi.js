@@ -10,14 +10,6 @@
 		stickyHeaderOffset = stickyHeader.offset().top;
 	}
 
-	var stickyTime = function() {
-		if( $(window).scrollTop() > stickyHeaderOffset ) {
-			body.addClass( 'sticking' );
-		} else {
-			body.removeClass( 'sticking' );
-		}
-	}
-
 	function linkedImages() {
 		var imgs = $( '.entry-content img' );
 
@@ -30,11 +22,6 @@
 
 	$( window ).load( function() {
 		linkedImages();
-		stickyTime();
-	} );
-
-	$( window ).scroll( function() {
-		stickyTime();
 	} );
 
 	$( window ).on( 'resize post-load', function() {
