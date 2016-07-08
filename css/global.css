@@ -8,7 +8,7 @@ Version : 1.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: comics-review
-Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready 
+Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
 */
 
 html {
@@ -336,12 +336,12 @@ html {
 
 *,
 *:before,
-*:after { 
+*:after {
 	box-sizing: inherit;
 }
 
 body {
-	background: #fff; 
+	background: #fff;
 	word-wrap: break-word;
 }
 
@@ -431,8 +431,8 @@ dd {
 }
 
 img {
-	height: auto; 
-	max-width: 100%; 
+	height: auto;
+	max-width: 100%;
 }
 
 table {
@@ -822,7 +822,7 @@ a:active {
 	text-decoration: none;
 	top: 37px;
 	width: auto;
-	z-index: 100000; 
+	z-index: 100000;
 }
 
 .alignleft {
@@ -1097,7 +1097,7 @@ td#next {
 	margin-bottom: 0.4375em;
 }
 
-.infinite-scroll .posts-navigation, 
+.infinite-scroll .posts-navigation,
 .infinite-scroll.neverending .site-footer {
 	display: none;
 }
@@ -1644,4 +1644,54 @@ object {
 	.custom-background.sticking .site-header {
 		width: 71.5em;
 	}
+}
+
+.main-container {
+ margin-top: 70px;
+}
+
+.open-events-container {
+ max-height: 400px;
+ display: flex;
+ flex-direction: row;
+ max-width: 100%;
+ overflow-x: auto;;
+}
+
+.open-events-container .event {
+ max-height: 390px;
+ width: 200px;
+ overflow: hidden;
+ margin: 5px;
+ border-radius: 2px;
+ box-shadow: 1px 1px 1px #F2F2F2;
+}
+
+.open-events-container .event .event-img {
+ height: 100px;
+ overflow: hidden;
+ text-align: center;
+ background-repeat: no-repeat;
+ background-size: cover;
+ background-position: center;
+}
+
+.open-events-container .event .event-details {
+ padding: 5px;
+}
+
+.open-events-container .event .event-details h3 {
+ font-size: 18px;
+}
+
+.open-events-container .event .event-details p {
+ color: #B9B9B9;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+ overflow: hidden;
+
+}
+
+.open-events-container .event .event-details .btn-container {
+ text-align: right;
 }
