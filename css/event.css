@@ -119,10 +119,22 @@
 	background: #DEDEDE none repeat scroll 0% 0%;
 	border-radius: 10px;
     padding: 20px;
+	width: 10px;
+}
+
+.titre_popup{
+	display: none;
+}
+
+#img-upload-form-container{
+	display: none;
 }
 
 #popup{
 	cursor: pointer;
+	font-size: 20px;
+    text-align: center;
+    width: 100vh;
 }
 
 #popup:hover{
