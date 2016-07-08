@@ -196,7 +196,7 @@
 		</form>
 	</div>
 	<div class="fixed display-flex-column" id="toi-aussi-upload-ton-img">
-		<div id="popup" class="reduire">Hide</div>
+		<div id="popup" class="agrandir">+</div>
 		<h3 class="titre_popup">Propose your drawing too</h3>
 		<div id="img-upload-form-container">
 			<form enctype="multipart/form-data" action="" method="post">
