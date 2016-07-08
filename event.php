@@ -2,12 +2,9 @@
 	global $post;
 	global $wpdb;
 
-	$evEndDate = get_post_meta($post->ID, 'event_datefin')[0];
-	$evEndDate = date_create_from_format('Y-m-d', $evEndDate);//->format('Y-m-d');
+	$evEndDate = get_post_meta($post->ID,'event_datefin')[0];
 	$curDate = date('Y-m-d');
-	
-	//$eventIsOver = (strtotime($curDate) <= strtotime($evEndDate));
-
+	$eventIsOver = (strtotime($curDate) <= strtotime($evEndDate));
 	$idpost = $post->ID;
 /* ##########  POST D'IMAGE  ###########*/
 	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){	
@@ -22,9 +19,6 @@
 					// Checker si le mail n'a pas deja up une img
 					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE email='".$mail."' AND post=".$idpost." LIMIT 0,1";
 					$resultats = $wpdb->get_results($query);
-					// var_dump($resultats);
-					// var_dump((int)$resultats[0]->nb);
-					// // var_dump();
 					if(is_null($resultats[0]) || (int) $resultats[0]->nb == 0){						
 						$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
 						$resultats = $wpdb->get_results($query);
@@ -90,9 +84,9 @@
 		if($eventIsOver){
 			$mail = trim($_POST['vote_mail']);
 			//On check si on a pas deja voté avec cet e-mail
-			$query = "SELECT COUNT(mail) as nb FROM {$wpdb->prefix}vote WHERE mail=".$mail." AND post=".$idpost." LIMIT 0,1";
+			$query = "SELECT COUNT(id) as nb FROM {$wpdb->prefix}vote WHERE mail=".$mail." AND post=".$idpost;
 			$resultats = $wpdb->get_results($query);
-			var_dump($resultats);
+			// LA REQUETE RETOURNE TOUJOURS UN ARRAY NULL, MYSTERE
 			if((int) $resultats[0]->nb == 0){
 				if(isset($_POST['image_choose'])){
 				$img = $_POST['image_choose'];
@@ -173,10 +167,12 @@
 					foreach ($resultats as $key => $line) {
 						$img = explode("/", $line->src);
 						$img = $img[count($img) - 1];
+						$query = "SELECT COUNT(image) as nb FROM {$wpdb->prefix}vote WHERE image=".$line->id." AND post=".$idpost ;
+						$resultats = $wpdb->get_results($query);
 						echo '<div class="item">'
 								.'<div class="draw-contour">'
 									.'<div class="draw-title">'
-										.'<label for="'.$line->id.'">'.$line->name.'</label>'
+										.'<label for="'.$line->id.'">'.$line->name.' : '.$resultats[0]->nb.'</label>'
 									.'</div>'
 									.'<div class="draw">'
 										.'<img width="300" height="300" src="'.get_template_directory_uri().'/images/event/'.$idpost.'/'.$img.'">'
@@ -190,9 +186,9 @@
 
 				?>
 			</div>
-			<div id="vote_submit" class="col-md-6 col-md-offset-3">
+			<div id="vote_submit" class="col-md-12">
 				<span>Check a draw, write your email address and submit your vote !</span>
-				<div>
+				<div id="mail_sub">
 					<input type="email" name="vote_mail" placeholder="Votre e-mail">
 					<input type="submit" value="Votez !">
 				</div>
