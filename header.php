@@ -11,33 +11,28 @@
 
 <body <?php body_class(); ?>>
 <div id="page" class="hfeed site">
-	<div class="site-branding-wrapper">
-		<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'esgi' ); ?></a>
-		<?php if ( get_header_image() ) : ?>
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-			<img src="<?php header_image(); ?>" width="<?php echo esc_attr( get_custom_header()->width ); ?>" height="<?php echo esc_attr( get_custom_header()->height ); ?>" alt="" class="custom-header">
-		</a>
-		<div class="site-branding site-brandin-size">
-			<div class="site-branding-size align">
-				<div class="site-title-wrapper">
-					<?php if ( function_exists( 'jetpack_the_site_logo' ) ) : ?>
-						<?php jetpack_the_site_logo(); ?>
-					<?php endif; ?>
-					<?php if ( is_front_page() && is_home() ) : ?>
-						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-					<?php else : ?>
-						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-					<?php endif;
-						$description = get_bloginfo( 'description', 'display' );
-						if ( $description || is_customize_preview() ) : ?>
-							<p class="site-description"><?php echo $description; ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-		</div>
-	</div>
+	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'esgi' ); ?></a>
+	<?php if ( get_header_image() ) : ?>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+		<img src="<?php header_image(); ?>" width="<?php echo esc_attr( get_custom_header()->width ); ?>" height="<?php echo esc_attr( get_custom_header()->height ); ?>" alt="" class="custom-header">
+	</a>
 	<?php endif; ?>
 	<header id="masthead" class="site-header" role="banner">
+		<div class="site-branding">
+			<?php if ( function_exists( 'jetpack_the_site_logo' ) ) : ?>
+				<?php jetpack_the_site_logo(); ?>
+			<?php endif; ?>
+			<?php if ( is_front_page() && is_home() ) : ?>
+				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+			<?php else : ?>
+				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+			<?php endif;
+				$description = get_bloginfo( 'description', 'display' );
+				if ( $description || is_customize_preview() ) : ?>
+					<p class="site-description"><?php echo $description; ?></p>
+			<?php endif; ?>
+		</div>
+
 		<nav id="site-navigation" class="main-navigation" role="navigation">
 			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Menu', 'esgi' ); ?></button>
 			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu' ) ); ?>
