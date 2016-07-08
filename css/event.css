@@ -148,4 +148,49 @@
   flex-direction : column;
   text-align : center;
   margin : 2%;
+  background-color: black;
+}
+
+.draw-contour{
+  margin : 2%;
+  background-color : #330000;
+
+}
+
+.draw-title{
+  background-color: #e6e6e6;
+}
+
+.radio input{
+  margin-top : 15%;
+}
+
+.draw-title label{
+  color : black;
+  font-size: 1.5em;
+  font-weight: bold;
+  font-style : italic;
+  cursor : pointer;
+}
+
+.item img{
+  padding : 2%;
+}
+
+#vote_submit{
+  display : flex;
+  justify-content : space-around;
+  text-align: center;
+  border : 2px solid red;
+}
+
+#vote_submit{
+  color : black;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top : 5%;
+}
+
+#h3{
+  text-align: center;
 }

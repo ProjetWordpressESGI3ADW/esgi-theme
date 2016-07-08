@@ -3,18 +3,15 @@
 	global $wpdb;
 
 	$evEndDate = get_post_meta($post->ID, 'event_datefin')[0];
-	$evEndDate = date_create_from_format('Y-m-d', $evEndDate)->format('Y-m-d');
+	$evEndDate = date_create_from_format('Y-m-d', $evEndDate);//->format('Y-m-d');
 	$curDate = date('Y-m-d');
-	$eventIsOver = (strtotime($curDate) <= strtotime($evEndDate));
+	
+	//$eventIsOver = (strtotime($curDate) <= strtotime($evEndDate));
 
 	$idpost = $post->ID;
-	// var_dump($idpost);
 /* ##########  POST D'IMAGE  ###########*/
 	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){	
 		if($eventIsOver){
-			// var_dump($_POST['event_proposed_email']);
-			// var_dump($_POST['event_proposed_img_name']);
-			// var_dump($_FILES['event_proposed_drawing']);
 			if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
 				$newImg = validateEventImg($_FILES['event_proposed_drawing']);
 				$name = validateEventImgName($_POST['event_proposed_img_name']);
@@ -166,7 +163,7 @@
 	</div>
 
 	<div>
-		<h3>Vote for your favorite drawing !</h3>
+		<div class="col-md-6 col-md-offset-3" id="h3"><h3>Vote for your favorite drawing !</h3></div>
 		<form action="" method="POST">
 			<div class="col-md-12" id="images">
 				<?php
@@ -177,17 +174,29 @@
 						$img = explode("/", $line->src);
 						$img = $img[count($img) - 1];
 						echo '<div class="item">'
-						.'<img width="300" height="300" src="'.get_template_directory_uri().'/images/event/'.$idpost.'/'.$img.'">'
-						.'<div class="radio">'
-						.'<input type="radio" name="image_choose" value="'.$line->id.'">'
-						.'</div>'
-						.'</div>';
+								.'<div class="draw-contour">'
+									.'<div class="draw-title">'
+										.'<label for="'.$line->id.'">'.$line->name.'</label>'
+									.'</div>'
+									.'<div class="draw">'
+										.'<img width="300" height="300" src="'.get_template_directory_uri().'/images/event/'.$idpost.'/'.$img.'">'
+									.'</div>'
+									.'<div class="radio">'
+										.'<input type="radio" name="image_choose" value="'.$line->id.'" id="'.$line->id.'">'
+									.'</div>'
+								.'</div>'
+							.'</div>';
 					}
 
 				?>
 			</div>
-			<input type="email" name="vote_mail" placeholder="Votre e-mail">
-			<input type="submit" value="Votez !">
+			<div id="vote_submit" class="col-md-6 col-md-offset-3">
+				<span>Check a draw, write your email address and submit your vote !</span>
+				<div>
+					<input type="email" name="vote_mail" placeholder="Votre e-mail">
+					<input type="submit" value="Votez !">
+				</div>
+			</div>
 		</form>
 	</div>
 	<div class="fixed display-flex-column" id="toi-aussi-upload-ton-img">
