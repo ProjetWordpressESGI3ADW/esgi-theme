@@ -1,10 +1,3 @@
-if(jQuery('.custom-header')){
-	var imgHeight = jQuery('.custom-header').height();
-	console.log(imgHeight);
-	jQuery('.site-branding-size').css('height', imgHeight);
-}
-
-
 ( function() {
 	var container, button, menu, links, subMenus;
 
@@ -56,6 +49,7 @@ if(jQuery('.custom-header')){
 
 	function toggleFocus() {
 		var self = this;
+
 
 		while ( -1 === self.className.indexOf( 'nav-menu' ) ) {
 
