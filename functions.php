@@ -144,7 +144,7 @@ add_action('init', 'menus');
 	$adminbar = is_admin_bar_showing();
 	wp_localize_script( 'esgi-script', 'esgiadminbar', array( $adminbar ) );
 
-	wp_enqueue_script( 'esgi-navigation', get_template_directory_uri() . '/js/navigation.js', array('jquery'), '20120206', true );
+	wp_enqueue_script( 'esgi-navigation', get_template_directory_uri() . '/js/menu.js', array('jquery'), '20120206', true );
 
 	wp_enqueue_script( 'esgi-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
 
@@ -157,11 +157,11 @@ add_action( 'wp_enqueue_scripts', 'esgi_scripts' );
 function esgi_fonts_url() {
     $fonts_url = '';
 
-	$esgi = esc_html_x( 'on', 'esgi Baskerville font: on or off', 'esgi' );
+	$esgi = esc_html_x( 'on', 'Arial', 'esgi' );
 
 	if ( 'off' !== $esgi ) {
 		$font_families = array();
-		$font_families[] = 'esgi Baskerville:400,400italic,700';
+		$font_families[] = 'Arial italic';
 
 		$query_args = array(
 			'family' => urlencode( implode( '|', $font_families ) ),
@@ -199,7 +199,7 @@ add_filter( 'get_archives_link', 'esgi_archive_count_span' );
 if ( ! function_exists( 'esgi_continue_reading_link' ) ) :
 
 function esgi_continue_reading_link() {
-	return '&hellip; <a class="more-link" href="'. esc_url( get_permalink() ) . '">' . sprintf( wp_kses_post( __( 'Continue reading <span class="screen-reader-text">%1$s</span> <span class="meta-nav" aria-hidden="true">&rarr;</span>', 'esgi' ) ), esc_attr( strip_tags( get_the_title() ) ) ) . '</a>';
+	return '&hellip; <a class="more-link" href="'. esc_url( get_permalink() ) . '">' . sprintf( wp_kses_post( __( 'Continuer la lecture <span class="screen-reader-text">%1$s</span> <span class="meta-nav" aria-hidden="true">&rarr;</span>', 'esgi' ) ), esc_attr( strip_tags( get_the_title() ) ) ) . '</a>';
 }
 endif;
 
@@ -247,7 +247,7 @@ function esgi_comments( $comment, $args, $depth ) {
 					</div>
 
 					<?php if ( '0' == $comment->comment_approved ) : ?>
-					<p class="comment-awaiting-moderation"><?php esc_html_e( 'Your comment is awaiting moderation.', 'esgi' ); ?></p>
+					<p class="comment-awaiting-moderation"><?php esc_html_e( 'Votre commentaire est en attente de modération.', 'esgi' ); ?></p>
 					<?php endif; ?>
 				</footer>
 

@@ -7,7 +7,7 @@
 
 			<?php get_template_part( 'template-parts/content', 'single' ); ?>
 
-			<?php the_post_navigation( array( 'next_text' => __( '<span class="meta-nav">Next Post</span> %title', 'esgi' ), 'prev_text' => __( '<span class="meta-nav">Previous Post</span> %title', 'esgi' ) ) ); ?>
+			<?php the_post_navigation( array( 'next_text' => __( '<span class="meta-nav">Article Suivant</span> %title', 'esgi' ), 'prev_text' => __( '<span class="meta-nav">Article Précédent</span> %title', 'esgi' ) ) ); ?>
 
 			<?php
 				if ( comments_open() || get_comments_number() ) :
