@@ -8,7 +8,7 @@ Version : 1.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: comics-review
-Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready 
+Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
 */
 
 html {
@@ -336,12 +336,12 @@ html {
 
 *,
 *:before,
-*:after { 
+*:after {
 	box-sizing: inherit;
 }
 
 body {
-	background: #fff; 
+	background: #fff;
 	word-wrap: break-word;
 }
 
@@ -431,8 +431,8 @@ dd {
 }
 
 img {
-	height: auto; 
-	max-width: 100%; 
+	height: auto;
+	max-width: 100%;
 }
 
 table {
@@ -822,7 +822,7 @@ a:active {
 	text-decoration: none;
 	top: 37px;
 	width: auto;
-	z-index: 100000; 
+	z-index: 100000;
 }
 
 .alignleft {
@@ -1097,7 +1097,7 @@ td#next {
 	margin-bottom: 0.4375em;
 }
 
-.infinite-scroll .posts-navigation, 
+.infinite-scroll .posts-navigation,
 .infinite-scroll.neverending .site-footer {
 	display: none;
 }
@@ -1445,7 +1445,7 @@ object {
 @media screen and ( min-width: 55em ) {
 	.site {
 		margin: 7em auto 0;
-		width: 50em;
+		width: 100%;
 		padding: 0;
 	}
 	.custom-background .site {
@@ -1483,7 +1483,7 @@ object {
 	.singular .site-content .widget-area {
 		float: right;
 		overflow: hidden;
-		width: 25%;
+		width: 100%;
 	}
 	.page-template-fullwidth-page-php .site-main,
 	.page-template-right-column-page-php .site-main {
