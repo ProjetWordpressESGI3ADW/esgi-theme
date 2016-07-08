@@ -2,123 +2,135 @@
 	global $post;
 	global $wpdb;
 
+	$evEndDate = get_post_meta($post->ID, 'event_datefin')[0];
+	$evEndDate = date_create_from_format('Y-m-d', $evEndDate)->format('Y-m-d');
+	$curDate = date('Y-m-d');
+	$eventIsOver = (strtotime($curDate) <= strtotime($evEndDate));
+
 	$idpost = $post->ID;
 	// var_dump($idpost);
 /* ##########  POST D'IMAGE  ###########*/
-	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){
-		// var_dump($_POST['event_proposed_email']);
-		// var_dump($_POST['event_proposed_img_name']);
-		// var_dump($_FILES['event_proposed_drawing']);
-		if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
-			$newImg = validateEventImg($_FILES['event_proposed_drawing']);
-			$name = validateEventImgName($_POST['event_proposed_img_name']);
-			if(!!$newImg && !!$name){
-				global $wpdb;
-				// $query = "SELECT * FROM {$wpdb->prefix}comments" ;
-				$mail = $_POST['event_proposed_email'];
-				// Checker si le mail n'a pas deja up une img
-				$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE email='".$mail."' AND post=".$idpost." LIMIT 0,1";
-				$resultats = $wpdb->get_results($query);
-				// var_dump($resultats);
-				// var_dump((int)$resultats[0]->nb);
-				// // var_dump();
-				if((int) $resultats[0]->nb == 0){
-					echo "tu peux enregistrer ton image maggle";
-
-				if((int) $resultats[0]->nb == 0 || is_null($resultats[0])){
-					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
+	if(isset($_POST['event_proposed_email']) && isset($_FILES['event_proposed_drawing']) && isset($_POST['event_proposed_img_name'])){	
+		if($eventIsOver){
+			// var_dump($_POST['event_proposed_email']);
+			// var_dump($_POST['event_proposed_img_name']);
+			// var_dump($_FILES['event_proposed_drawing']);
+			if(filter_var($_POST['event_proposed_email'], FILTER_VALIDATE_EMAIL)){
+				$newImg = validateEventImg($_FILES['event_proposed_drawing']);
+				$name = validateEventImgName($_POST['event_proposed_img_name']);
+				if(!!$newImg && !!$name){
+					global $wpdb;
+					// $query = "SELECT * FROM {$wpdb->prefix}comments" ;
+					$mail = $_POST['event_proposed_email'];
+					// Checker si le mail n'a pas deja up une img
+					$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE email='".$mail."' AND post=".$idpost." LIMIT 0,1";
 					$resultats = $wpdb->get_results($query);
-					if((int) $resultats[0]->nb == 0){
-						$finalPath = renameContestEventImg($idpost, $newImg['path'], $name, $newImg['format']);
-						var_dump($finalPath);
-						// var_dump($wpdb->prefix.'image');
+					// var_dump($resultats);
+					// var_dump((int)$resultats[0]->nb);
+					// // var_dump();
+					if(is_null($resultats[0]) || (int) $resultats[0]->nb == 0){						
+						$query = "SELECT COUNT(email) as nb FROM {$wpdb->prefix}image WHERE name=".$name." LIMIT 0,1";
+						$resultats = $wpdb->get_results($query);
+						if((int) $resultats[0]->nb == 0){
+							$finalPath = renameContestEventImg($idpost, $newImg['path'], $name, $newImg['format']);
+							var_dump($finalPath);
+							// var_dump($wpdb->prefix.'image');
 
-						// var_dump($idpost);
-						// var_dump($finalPath);
-						if(!!$finalPath){
-							$r = $wpdb->insert(
-						    	$wpdb->prefix.'image',
-							    array(
-							        'post' => $idpost,
-							        'src' => $finalPath,
-							        'name' => $name,
-							        'email' => $mail
-							    ),
-							    array(
-							        '%d',
-							        '%s',
-							        '%s',
-							        '%s'
-							    )
-							);
-							// var_dump($r);
-							if($r){
-								$msg= "Your drawing was succeffully uploaded !";
+							// var_dump($idpost);
+							// var_dump($finalPath);
+							if(!!$finalPath){
+								$r = $wpdb->insert(
+							    	$wpdb->prefix.'image',
+								    array(
+								        'post' => $idpost,
+								        'src' => $finalPath,
+								        'name' => $name,
+								        'email' => $mail
+								    ),
+								    array(
+								        '%d',
+								        '%s',
+								        '%s',
+								        '%s'
+								    )
+								);
+								// var_dump($r);
+								if($r){
+									$msg= "Your drawing was succeffully uploaded !";
+								}
+								else{
+									$msg= "Not able to save your drawing, we are really sorry";
+								}
 							}
 							else{
-								$msg= "Not able to save your drawing, we are really sorry";
+								$msg = "Your image couldn't be moved !";
 							}
 						}
-						else{
-							$msg = "Your image couldn't be moved !";
-						}
+						else
+							$msg= "This image name is already being used for this event !";
 					}
 					else
-						$msg= "This image name is already being used for this event !";
+						$msg= "An image was already posted with this email account";
 				}
-				else
-					$msg= "An image was already posted with this email account";
+				else{
+					$msg = "image's name must me 49 characters long and be composed only of aplhanumerical characters !";
+					$msg .= "<br>";
+					$msg .= "email must be formated as: your_email@email.com";
+				}
 			}
 			else{
-				$msg= "image's name must me 49 characters long and be composed only of aplhanumerical characters !";
-				$msg= "<br>";
-				$msg= "email must be formated as: your_email@email.com";
+				$msg= 'Email was quite not an email !';
 			}
-		}else{
-			$msg= 'Email was quite not an email !';
 		}
-
+		else{
+			$msg = "Event is over !";
+		}
 		unset($_POST['event_proposed_email'], $_POST['event_proposed_img_name'], $_FILES['event_proposed_drawing']);flush();
 	}
-}
+
 /* ##########  POST DE VOTE ########### */
-	else if(isset($_POST['vote_mail'])){
-		$mail = trim($_POST['vote_mail']);
-		//On check si on a pas deja voté avec cet e-mail
-		$query = "SELECT COUNT(mail) as nb FROM {$wpdb->prefix}vote WHERE mail=".$mail." AND post=".$idpost." LIMIT 0,1";
-		$resultats = $wpdb->get_results($query);
-		var_dump($resultats);
-		if((int) $resultats[0]->nb == 0){
-			if(isset($_POST['image_choose'])){
-			$img = $_POST['image_choose'];
-				if(filter_var($mail,FILTER_VALIDATE_EMAIL)){		
-					$wpdb->insert(
-				    	$wpdb->prefix.'vote',
-					    array(
-					        'mail' => $mail,
-					        'image' => $img,
-					        'post' => $idpost,
-					    ),
-					    array(
-					        '%s',
-					        '%d',
-					        '%d',
-					    )
-					);
-					$e = 0;
+	else if(isset($_POST['vote_mail'])){	
+		if($eventIsOver){
+			$mail = trim($_POST['vote_mail']);
+			//On check si on a pas deja voté avec cet e-mail
+			$query = "SELECT COUNT(mail) as nb FROM {$wpdb->prefix}vote WHERE mail=".$mail." AND post=".$idpost." LIMIT 0,1";
+			$resultats = $wpdb->get_results($query);
+			var_dump($resultats);
+			if((int) $resultats[0]->nb == 0){
+				if(isset($_POST['image_choose'])){
+				$img = $_POST['image_choose'];
+					if(filter_var($mail,FILTER_VALIDATE_EMAIL)){		
+						$wpdb->insert(
+					    	$wpdb->prefix.'vote',
+						    array(
+						        'mail' => $mail,
+						        'image' => $img,
+						        'post' => $idpost,
+						    ),
+						    array(
+						        '%s',
+						        '%d',
+						        '%d',
+						    )
+						);
+						$e = 0;
+					}else{
+						//Si adresse email éronnée 
+						$e = 1;
+					}	
 				}else{
-					//Si adresse email éronnée 
-					$e = 1;
-				}	
+				//Si pas d'image choisie
+				$ei = 2;
+			}
 			}else{
-			//Si pas d'image choisie
-			$ei = 2;
+				//Si deja voté
+				$e = 4;
+			}
 		}
-		}else{
-			//Si deja voté
-			$e = 4;
-		}
-	}else{
+		else
+			$msg = "Event is over !";
+	}
+	else{
 	//Si pas d'adresse mail renseignée
 		$em = 3;
 	}
