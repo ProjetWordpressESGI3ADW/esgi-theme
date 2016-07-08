@@ -1,3 +1,5 @@
+console.log("isCalled");
+
 ( function() {
 	var container, button, menu, links, subMenus;
 
