@@ -1,29 +1,7 @@
-<?php get_header();?>
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-
-		<?php if ( have_posts() ) : ?>
-
-			<?php while ( have_posts() ) : the_post(); ?>
-
-				<?php
-
-					get_template_part( 'template-parts/content', get_post_format() );
-				?>
-
-			<?php endwhile; ?>
-
-			<?php the_posts_navigation(); ?>
-
-		<?php else : ?>
-
-			<?php get_template_part( 'template-parts/content', 'none' ); ?>
-
-		<?php endif; ?>
-
-		</main>
-	</div>
 <?php
+	get_header();
+
+
 		// var_dump(get_post());
 		// vérifie si l'on est dans la page homepage ou events
 		if(is_home() || is_numeric(strpos(get_post()->post_type, "event"))){
@@ -51,6 +29,7 @@
 						</div>
 
 					</div>";
+					get_template_part( 'template-parts/content', get_post_format() );
 				}
 				wp_reset_query();
 			}else{
@@ -63,6 +42,36 @@
 		else{
 			echo("post introuvable");
 		}
+
+
 ?>
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+		<?php if ( have_posts() ) : ?>
+			<?php while ( have_posts() ) : the_post(); ?>
+
+				<?php get_template_part( 'template-parts/content', get_post_format() ); ?>
+
+			<?php endwhile; ?>
+
+			<?php the_posts_navigation(); ?>
+
+		<?php else : ?>
+
+			<?php get_template_part( 'template-parts/content', 'none' ); ?>
+
+		<?php endif; ?>
+
+		</main>
+	</div>
 
 <?php get_footer(); ?>
+
+		// if(is_active_sidebar('sidebar-1')){
+		// 	dynamic_sidebar('sidebar-1');
+		// }
+
+		get_footer();
+	?>
+	</div>

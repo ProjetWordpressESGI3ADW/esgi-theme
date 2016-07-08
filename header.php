@@ -41,3 +41,8 @@
 	</header>
 
 	<div id="content" class="site-content">
+		<div class="row">
+			<div class="col-sm-2">
+				<?php get_sidebar(); ?>
+			</div>
+			<div class="col-sm-10">
