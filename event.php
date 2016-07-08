@@ -132,7 +132,7 @@
 	}
 	else{
 	//Si pas d'adresse mail renseignée
-		$msg = "Please writ your email address";
+		// $msg = "Please writ your email address";
 	}
 		
 /* ########### PAGE NORMAL ############# */
